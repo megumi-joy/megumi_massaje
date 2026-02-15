@@ -1,25 +1,27 @@
 :root {
-    /* Colors - Mystic Nature Theme */
-    --color-bg-primary: #1a0b2e;
-    /* Deep mystic purple */
-    --color-bg-secondary: #2d1b4e;
-    /* Lighter purple for cards */
-    --color-accent: #ffd700;
-    /* Gold for highlights */
-    --color-accent-glow: rgba(255, 215, 0, 0.5);
-    --color-nature-green: #4ade80;
-    /* Fresh green for nature elements */
-    --color-text-primary: #f3e8ff;
-    /* Soft white/purple */
-    --color-text-secondary: #b39ddb;
-    /* Muted purple */
-    --color-success: #4ade80;
-    --color-error: #f87171;
+    /* Colors - Earthy Lemongrass Theme */
+    --color-bg-primary: #3d342d;
+    /* Dark Warm Brown */
+    --color-bg-secondary: #4d443d;
+    /* Warm Card Brown */
+    --color-accent: #d4a373;
+    /* Muted Peach Accent */
+    --color-accent-glow: rgba(212, 163, 115, 0.4);
+    --color-nature-green: #8b9a47;
+    /* Lemongrass Olive */
+    --color-text-primary: #f1f1f1;
+    /* Warm White */
+    --color-text-secondary: #b7b7a4;
+    /* Soft Sage */
+    --color-success: #8b9a47;
+    --color-error: #bc4749;
 
     /* Typography */
-    --font-heading: 'Playfair Display', serif;
+    --font-heading: 'Playfair Display',
+        serif;
     /* Elegant, premium */
-    --font-body: 'Montserrat', sans-serif;
+    --font-body: 'Montserrat',
+        sans-serif;
     /* Clean, modern */
 
     /* Spacing */
@@ -34,7 +36,8 @@
     --transition-medium: 0.4s ease;
 
     /* Shadows */
-    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-glow: 0 0 15px var(--color-accent-glow);
 }
 

@@ -225,14 +225,15 @@ const MainPage = () => {
                                 style={{
                                     gridColumn: i === 3 ? 'span 1.5' : i === 4 ? 'span 1.5' : 'auto',
                                     padding: '1.5rem',
-                                    background: 'rgba(210, 150, 130, 0.7)',
+                                    background: 'rgba(139, 154, 71, 0.8)',
                                     border: 'none',
                                     borderRadius: '8px',
                                     color: 'white',
                                     fontSize: '1.2rem',
                                     fontWeight: 'bold',
                                     cursor: 'pointer',
-                                    backdropFilter: 'blur(5px)'
+                                    backdropFilter: 'blur(5px)',
+                                    boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
                                 }}
                             >
                                 {t(item.key)}
