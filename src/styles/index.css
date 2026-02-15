@@ -1,0 +1,111 @@
+:root {
+    /* Colors - Mystic Nature Theme */
+    --color-bg-primary: #1a0b2e;
+    /* Deep mystic purple */
+    --color-bg-secondary: #2d1b4e;
+    /* Lighter purple for cards */
+    --color-accent: #ffd700;
+    /* Gold for highlights */
+    --color-accent-glow: rgba(255, 215, 0, 0.5);
+    --color-nature-green: #4ade80;
+    /* Fresh green for nature elements */
+    --color-text-primary: #f3e8ff;
+    /* Soft white/purple */
+    --color-text-secondary: #b39ddb;
+    /* Muted purple */
+    --color-success: #4ade80;
+    --color-error: #f87171;
+
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    /* Elegant, premium */
+    --font-body: 'Montserrat', sans-serif;
+    /* Clean, modern */
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 8rem;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.4s ease;
+
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-glow: 0 0 15px var(--color-accent-glow);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    background: transparent;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-bg-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+}
+
+/* Utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, var(--color-accent), var(--color-nature-green));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
