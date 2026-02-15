@@ -16,7 +16,7 @@ function App() {
 
     return (
         <LanguageProvider>
-            <Router>
+            <Router basename={import.meta.env.BASE_URL}>
                 <AnimatePresence mode="wait">
                     <Routes>
                         <Route path="/admin" element={<AdminDashboard />} />
