@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
 import { supabase } from '../utils/supabaseClient';
 import ServiceCard from './ServiceCard';
 import BookingModal from './BookingModal';
-import { Calendar, Phone } from 'lucide-react';
+import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone } from 'lucide-react';
 
 const AnimatedText = ({ text, className, style, delay = 0 }) => {
     const words = text.split(' ');
@@ -62,13 +62,50 @@ const AnimatedText = ({ text, className, style, delay = 0 }) => {
 };
 
 const MainPage = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
+    const [activeLocation, setActiveLocation] = useState('Vilanova');
+
+    // Section Refs
+    const whoWeAreRef = useRef(null);
+    const treatmentsRef = useRef(null);
+    const benefitsRef = useRef(null);
+    const contactRef = useRef(null);
+    const locationRef = useRef(null);
+
+    const locations = {
+        Vilanova: {
+            address: 'Plaza soler i gustems 13, bajos derecha, Vilanova i la Geltru, Barcelona 08800',
+            phone: '+34 635 243 458',
+            map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.482329640!2d1.725!3d41.222' // Placeholder
+        },
+        Sitges: {
+            address: 'Carrer de Sant Gaudenci 26, Sitges 08870',
+            phone: '+34 635 243 458',
+            map: ''
+        },
+        Murcia: {
+            address: 'Calle Mayor 42, Murcia 30001',
+            phone: '+34 635 243 458',
+            map: ''
+        }
+    };
 
     const handleBook = (service) => {
         setSelectedService(service);
         setIsBookingOpen(true);
+    };
+
+    const scrollToSection = (key) => {
+        const refMap = {
+            'Who We Are': whoWeAreRef,
+            'Treatments': treatmentsRef,
+            'Benefits': benefitsRef,
+            'Contact': contactRef,
+            'Location': locationRef
+        };
+        refMap[key]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     return (
@@ -222,6 +259,7 @@ const MainPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: item.delay }}
                                 whileHover={{ scale: 1.05, background: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
+                                onClick={() => scrollToSection(item.key)}
                                 style={{
                                     gridColumn: i === 3 ? 'span 1.5' : i === 4 ? 'span 1.5' : 'auto',
                                     padding: '1.5rem',
@@ -240,6 +278,102 @@ const MainPage = () => {
                             </motion.button>
                         ))}
                     </div>
+                </motion.section>
+
+                {/* Who We Are Section */}
+                <motion.section
+                    ref={whoWeAreRef}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{ padding: '4rem 0', textAlign: 'center' }}
+                >
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                        <Info size={40} color="var(--color-accent)" />
+                    </div>
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{t('Who We Are')}</h2>
+                    <p style={{
+                        fontSize: '1.2rem',
+                        lineHeight: '1.8',
+                        color: 'var(--color-text-secondary)',
+                        maxWidth: '800px',
+                        margin: '0 auto'
+                    }}>
+                        {t('WhoWeAreContent')}
+                    </p>
+                </motion.section>
+
+                {/* Benefits Section */}
+                <motion.section
+                    ref={benefitsRef}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{
+                        padding: '4rem 2rem',
+                        background: 'rgba(139, 154, 71, 0.1)',
+                        borderRadius: '24px',
+                        margin: '4rem 0'
+                    }}
+                >
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>
+                        {t('Benefits')}
+                    </h2>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '2rem'
+                    }}>
+                        {t('BenefitsContent').split('\n').map((benefit, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.1 }}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'flex-start',
+                                    gap: '1rem',
+                                    background: 'var(--color-bg-secondary)',
+                                    padding: '1.5rem',
+                                    borderRadius: '12px'
+                                }}
+                            >
+                                <CheckCircle size={24} color="var(--color-nature-green)" style={{ flexShrink: 0 }} />
+                                <span style={{ fontSize: '1.1rem' }}>{benefit.replace('• ', '')}</span>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.section>
+
+                <div ref={treatmentsRef} />
+
+                {/* Fohow Special Section */}
+                <motion.section
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    style={{
+                        padding: '4rem 2rem',
+                        background: 'linear-gradient(135deg, var(--color-bg-secondary) 0%, #2d3e2d 100%)',
+                        borderRadius: '24px',
+                        margin: '4rem 0',
+                        border: '1px solid var(--color-nature-green)',
+                        textAlign: 'center'
+                    }}
+                >
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-nature-green)' }}>
+                        Fohow Bioenergy Therapy
+                    </h2>
+                    <p style={{
+                        fontSize: '1.2rem',
+                        lineHeight: '1.8',
+                        color: 'var(--color-text-primary)',
+                        maxWidth: '800px',
+                        margin: '0 auto'
+                    }}>
+                        {t('FohowContent')}
+                    </p>
                 </motion.section>
 
                 {/* Services Sections */}
@@ -279,24 +413,82 @@ const MainPage = () => {
                         </div>
                     </motion.section>
                 ))}
+                {/* Location Selector Section */}
+                <motion.section
+                    ref={locationRef}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    style={{ padding: '4rem 0' }}
+                >
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>
+                        {t('Location')}
+                    </h2>
+
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+                        {Object.keys(locations).map(loc => (
+                            <button
+                                key={loc}
+                                onClick={() => setActiveLocation(loc)}
+                                style={{
+                                    padding: '0.8rem 2rem',
+                                    borderRadius: '50px',
+                                    background: activeLocation === loc ? 'var(--color-accent)' : 'rgba(255,255,255,0.05)',
+                                    color: activeLocation === loc ? 'var(--color-bg-primary)' : 'var(--color-text-primary)',
+                                    border: '1px solid var(--color-accent)',
+                                    fontWeight: 'bold',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                {loc}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div style={{
+                        background: 'var(--color-bg-secondary)',
+                        padding: '2rem',
+                        borderRadius: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                    }}>
+                        <MapPin size={32} color="var(--color-accent)" />
+                        <h3 style={{ margin: 0 }}>{activeLocation}</h3>
+                        <p style={{ textAlign: 'center', maxWidth: '400px', fontSize: '1.1rem' }}>
+                            {locations[activeLocation].address}
+                        </p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-accent)' }}>
+                            <Smartphone size={18} />
+                            <strong>{locations[activeLocation].phone}</strong>
+                        </div>
+                    </div>
+                </motion.section>
             </main>
 
             {/* Footer */}
-            <footer style={{
+            <footer ref={contactRef} style={{
                 background: 'var(--color-bg-secondary)',
-                padding: '2rem',
+                padding: '4rem 2rem',
                 textAlign: 'center',
-                color: 'var(--color-text-secondary)'
+                color: 'var(--color-text-secondary)',
+                borderTop: '1px solid rgba(255,215,0,0.1)'
             }}>
-                <div style={{ maxWidth: '600px', margin: '1rem auto' }}>
-                    <p style={{ margin: '0.5rem 0' }}>Plaza soler i gustems 13, bajos derecha</p>
-                    <p style={{ margin: '0.5rem 0' }}>Vilanova i la Geltru, Barcelona 08800</p>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Phone size={20} /> +34 635 243 458
+                <h2 style={{ marginBottom: '1.5rem' }}>Megumi Massaje</h2>
+                <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+                    <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('Harmonizing Mind, Body, and Soul')}</p>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <Phone size={20} /> {locations['Vilanova'].phone}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <MapPin size={20} /> Vilanova • Sitges • Murcia
+                        </div>
                     </div>
                 </div>
+                <p style={{ marginTop: '2rem', opacity: 0.6 }}>&copy; {new Date().getFullYear()} Megumi Massaje. All rights reserved.</p>
             </footer>
 
             <BookingModal
