@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Phone, Calendar, Clock, MapPin, CheckCircle, Info, MessageSquare } from 'lucide-react';
+import { User, Calendar, CheckCircle, Info } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { supabase } from '../utils/supabaseClient';
 
@@ -16,9 +16,9 @@ const InlineBooking = ({ selectedService, onCancel }) => {
     });
 
     const [availableDates, setAvailableDates] = useState([]);
-    const [availableTimes, setAvailableTimes] = useState([
+    const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-    ]);
+    ];
 
     useEffect(() => {
         // Generate next 10 days

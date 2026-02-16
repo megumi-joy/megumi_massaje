@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
-import { X, Calendar, Edit, Save, LogOut } from 'lucide-react';
+import { Edit, LogOut } from 'lucide-react';
 
 const AdminDashboard = () => {
+    const { t } = useLanguage();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [pin, setPin] = useState('');
     const [activeTab, setActiveTab] = useState('bookings'); // bookings, services

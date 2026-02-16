@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
 import { supabase } from '../utils/supabaseClient';
@@ -62,7 +62,7 @@ const AnimatedText = ({ text, className, style, delay = 0 }) => {
 };
 
 const MainPage = () => {
-    const { t, language } = useLanguage();
+    const { t } = useLanguage();
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [activeLocation, setActiveLocation] = useState('Sitges');
