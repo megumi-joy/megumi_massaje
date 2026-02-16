@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
 import { supabase } from '../utils/supabaseClient';
-import ServiceCard from './ServiceCard';
-import BookingModal from './BookingModal';
+import ServiceSlider from './ServiceSlider';
+import InlineBooking from './InlineBooking';
 import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone } from 'lucide-react';
 
 const AnimatedText = ({ text, className, style, delay = 0 }) => {
@@ -65,9 +65,36 @@ const MainPage = () => {
     const { t, language } = useLanguage();
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
-    const [activeLocation, setActiveLocation] = useState('Vilanova');
+    const [activeLocation, setActiveLocation] = useState('Sitges');
+    const [servicesData, setServicesData] = useState(SERVICES);
 
-    // Section Refs
+    useEffect(() => {
+        if (supabase) {
+            fetchServices();
+        }
+    }, []);
+
+    const fetchServices = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('services')
+                .select('*');
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+                // Group by category to match the UI structure
+                const grouped = data.reduce((acc, service) => {
+                    const cat = service.category || 'massage';
+                    if (!acc[cat]) acc[cat] = { title: service.category_title || { en: cat }, items: [] };
+                    acc[cat].items.push(service);
+                    return acc;
+                }, {});
+                setServicesData(grouped);
+            }
+        } catch (err) {
+            console.warn('Real-time services not available, using local data.', err);
+        }
+    };
     const whoWeAreRef = useRef(null);
     const treatmentsRef = useRef(null);
     const benefitsRef = useRef(null);
@@ -75,11 +102,6 @@ const MainPage = () => {
     const locationRef = useRef(null);
 
     const locations = {
-        Vilanova: {
-            address: 'Plaza soler i gustems 13, bajos derecha, Vilanova i la Geltru, Barcelona 08800',
-            phone: '+34 635 243 458',
-            map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2994.482329640!2d1.725!3d41.222' // Placeholder
-        },
         Sitges: {
             address: 'Carrer de Sant Gaudenci 26, Sitges 08870',
             phone: '+34 635 243 458',
@@ -94,7 +116,10 @@ const MainPage = () => {
 
     const handleBook = (service) => {
         setSelectedService(service);
-        setIsBookingOpen(true);
+        // We will scroll to the booking section automatically
+        setTimeout(() => {
+            document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
     };
 
     const scrollToSection = (key) => {
@@ -180,6 +205,45 @@ const MainPage = () => {
                             va: 'Experimenta tècniques de curació antigues en un santuario modern.'
                         })}
                     />
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.8 }}
+                        style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '3rem', flexWrap: 'wrap' }}
+                    >
+                        <button
+                            onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                            style={{
+                                padding: '1rem 2.5rem',
+                                background: 'transparent',
+                                border: '2px solid var(--color-accent)',
+                                color: 'var(--color-accent)',
+                                borderRadius: '50px',
+                                fontWeight: 'bold',
+                                fontSize: '1.1rem',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {t('View Treatments', { en: 'View Treatments', es: 'Ver Tratamientos', ru: 'Процедуры', ua: 'Процедури', ca: 'Veure Tractaments', va: 'Veure Tractaments' })}
+                        </button>
+                        <button
+                            onClick={() => setIsBookingOpen(true)}
+                            style={{
+                                padding: '1rem 2.5rem',
+                                background: 'var(--color-accent)',
+                                border: '2px solid var(--color-accent)',
+                                color: 'var(--color-bg-primary)',
+                                borderRadius: '50px',
+                                fontWeight: 'bold',
+                                fontSize: '1.1rem',
+                                cursor: 'pointer',
+                                boxShadow: '0 0 20px var(--color-accent-glow)'
+                            }}
+                        >
+                            {t('Book Now')}
+                        </button>
+                    </motion.div>
                 </motion.section>
 
                 {/* UNESCO Highlight */}
@@ -376,8 +440,10 @@ const MainPage = () => {
                     </p>
                 </motion.section>
 
-                {/* Services Sections */}
-                {Object.entries(SERVICES).map(([key, category], index) => (
+                <div ref={treatmentsRef} />
+
+                {/* Services Sections - Now as Sliders */}
+                {Object.entries(servicesData).map(([key, category], index) => (
                     <motion.section
                         key={key}
                         initial={{ opacity: 0, y: 30 }}
@@ -389,30 +455,30 @@ const MainPage = () => {
                         <h2 style={{
                             borderBottom: '2px solid var(--color-bg-secondary)',
                             paddingBottom: '0.5rem',
-                            display: 'inline-block'
+                            display: 'inline-block',
+                            marginBottom: '2rem'
                         }}>
                             <AnimatedText text={t(category.title)} />
                         </h2>
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                            gap: '2rem',
-                            marginTop: '2rem'
-                        }}>
-                            {category.items.map((item, i) => (
-                                <motion.div
-                                    key={item.id}
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                                >
-                                    <ServiceCard service={item} onBook={handleBook} />
-                                </motion.div>
-                            ))}
-                        </div>
+
+                        <ServiceSlider
+                            services={category.items}
+                            onSelect={handleBook}
+                        />
                     </motion.section>
                 ))}
+
+                {/* Inline Booking Section */}
+                <div id="booking-section">
+                    <AnimatePresence>
+                        {selectedService && (
+                            <InlineBooking
+                                selectedService={selectedService}
+                                onCancel={() => setSelectedService(null)}
+                            />
+                        )}
+                    </AnimatePresence>
+                </div>
                 {/* Location Selector Section */}
                 <motion.section
                     ref={locationRef}
@@ -481,21 +547,16 @@ const MainPage = () => {
                     <p style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>{t('Harmonizing Mind, Body, and Soul')}</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Phone size={20} /> {locations['Vilanova'].phone}
+                            <Phone size={20} /> {locations['Sitges'].phone}
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <MapPin size={20} /> Vilanova • Sitges • Murcia
+                            <MapPin size={20} /> Sitges • Murcia
                         </div>
                     </div>
                 </div>
                 <p style={{ marginTop: '2rem', opacity: 0.6 }}>&copy; {new Date().getFullYear()} Megumi Massaje. All rights reserved.</p>
             </footer>
 
-            <BookingModal
-                isOpen={isBookingOpen}
-                onClose={() => setIsBookingOpen(false)}
-                preSelectedService={selectedService}
-            />
         </div>
     );
 };

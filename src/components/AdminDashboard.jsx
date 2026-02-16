@@ -11,6 +11,7 @@ const AdminDashboard = () => {
     const [selectedLocation, setSelectedLocation] = useState('sitges');
     const [bookings, setBookings] = useState([]);
     const [servicesData, setServicesData] = useState(SERVICES);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Simple PIN auth for MVP as requested
     const handleLogin = (e) => {
@@ -23,10 +24,40 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {
-        if (isAuthenticated && activeTab === 'bookings' && supabase) {
-            fetchBookings();
+        if (isAuthenticated) {
+            if (activeTab === 'bookings' && supabase) {
+                fetchBookings();
+            } else if (activeTab === 'services' && supabase) {
+                fetchServicesFromDB();
+            }
         }
     }, [isAuthenticated, activeTab, selectedLocation]);
+
+    const fetchServicesFromDB = async () => {
+        if (!supabase) return;
+        setIsLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('services')
+                .select('*');
+
+            if (error) throw error;
+            if (data && data.length > 0) {
+                // For MVP, we still group them by category if we want to match the UI
+                const grouped = data.reduce((acc, service) => {
+                    const cat = service.category || 'massage';
+                    if (!acc[cat]) acc[cat] = { title: service.category_title || { en: cat }, items: [] };
+                    acc[cat].items.push(service);
+                    return acc;
+                }, {});
+                setServicesData(grouped);
+            }
+        } catch (err) {
+            console.error('Error fetching services:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const fetchBookings = async () => {
         if (!supabase) return;
@@ -96,7 +127,7 @@ const AdminDashboard = () => {
 
             {activeTab === 'bookings' && (
                 <div>
-                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                         <button onClick={() => setSelectedLocation('sitges')} style={{ padding: '0.5rem 1rem', borderRadius: '50px', border: '1px solid var(--color-accent)', background: selectedLocation === 'sitges' ? 'var(--color-accent)' : 'transparent', color: selectedLocation === 'sitges' ? 'var(--color-bg-primary)' : 'var(--color-accent)' }}>Sitges</button>
                         <button onClick={() => setSelectedLocation('murcia')} style={{ padding: '0.5rem 1rem', borderRadius: '50px', border: '1px solid var(--color-accent)', background: selectedLocation === 'murcia' ? 'var(--color-accent)' : 'transparent', color: selectedLocation === 'murcia' ? 'var(--color-bg-primary)' : 'var(--color-accent)' }}>Murcia</button>
                     </div>
@@ -127,8 +158,35 @@ const AdminDashboard = () => {
 
             {activeTab === 'services' && (
                 <div>
-                    <p>Service management coming soon...</p>
-                    {/* Placeholder for service editing implementation */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                        <h2>Current Services</h2>
+                        <button
+                            disabled
+                            style={{ padding: '0.5rem 1rem', background: 'var(--color-nature-green)', color: 'white', borderRadius: '4px', opacity: 0.5 }}
+                        >
+                            + Add New (Coming Soon)
+                        </button>
+                    </div>
+
+                    {isLoading ? (
+                        <p>Loading services...</p>
+                    ) : (
+                        <div style={{ display: 'grid', gap: '1rem' }}>
+                            {Object.entries(servicesData).map(([catKey, category]) => (
+                                <div key={catKey} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>
+                                    <h3 style={{ color: 'var(--color-accent)' }}>{t(category.title)}</h3>
+                                    <div style={{ display: 'grid', gap: '0.5rem', marginTop: '0.5rem' }}>
+                                        {category.items.map(service => (
+                                            <div key={service.id} style={{ padding: '0.5rem 1rem', background: 'var(--color-bg-secondary)', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <span>{t(service.name)}</span>
+                                                <button style={{ color: 'var(--color-accent)' }}><Edit size={16} /></button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
         </div>

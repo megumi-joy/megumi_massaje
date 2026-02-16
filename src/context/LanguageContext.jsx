@@ -7,8 +7,8 @@ export const LANGUAGES = [
     { code: 'es', name: 'Español', flag: '🇪🇸' },
     { code: 'ru', name: 'Русский', flag: '🇷🇺' },
     { code: 'ua', name: 'Українська', flag: '🇺🇦' },
-    { code: 'ca', name: 'Català', flag: '🏴󠁥󠁳󠁣󠁴󠁿' }, // Using flag for Catalonia region representation or similar
-    { code: 'va', name: 'Valencià', flag: '🥘' } // Added Valenciano
+    { code: 'ca', name: 'Català', flag: '🏴󠁥󠁳󠁣󠁴󠁿' },
+    { code: 'va', name: 'Valencià', flag: '🥘' }
 ];
 
 export const LanguageProvider = ({ children }) => {
