@@ -48,7 +48,7 @@ const Landing = ({ onEnter }) => {
             </motion.div>
 
             <div style={{ zIndex: 1, display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', maxWidth: '800px' }}>
-                {LANGUAGES.map((lang, index) => (
+                {LANGUAGES.filter(lang => !lang.hidden).map((lang, index) => (
                     <motion.button
                         key={lang.code}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -60,9 +60,9 @@ const Landing = ({ onEnter }) => {
                         style={{
                             padding: '1rem 2rem',
                             border: '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '8px',
+                            borderRadius: '50px',
                             color: 'var(--color-text-primary)',
-                            fontSize: '1.1rem',
+                            fontSize: '1.2rem',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5rem',
@@ -73,7 +73,6 @@ const Landing = ({ onEnter }) => {
                             cursor: 'pointer'
                         }}
                     >
-                        <span style={{ fontSize: '1.5rem' }}>{lang.flag}</span>
                         {lang.name}
                     </motion.button>
                 ))}

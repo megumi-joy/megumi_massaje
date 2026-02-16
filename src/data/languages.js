@@ -1,8 +1,7 @@
 export const LANGUAGES = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-    { code: 'ua', name: 'Українська', flag: '🇺🇦' },
-    { code: 'ca', name: 'Català', flag: '🏴󠁥󠁳󠁣󠁴󠁿' },
-    { code: 'va', name: 'Valencià', flag: '🥘' }
+    { code: 'en', name: 'English' },
+    { code: 'es', name: 'Español' },
+    { code: 'ru', name: 'Русский', hidden: true },
+    { code: 'ua', name: 'Українська' },
+    { code: 'ca', name: 'Català' }
 ];
