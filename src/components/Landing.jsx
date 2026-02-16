@@ -1,6 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage, LANGUAGES } from '../context/LanguageContext';
+import { useLanguage } from '../context/LanguageContext';
+import { LANGUAGES } from '../data/languages';
 import { Star, ChevronDown } from 'lucide-react';
 
 const Landing = ({ onEnter }) => {

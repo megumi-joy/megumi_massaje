@@ -1,15 +1,8 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { LANGUAGES } from '../data/languages';
 
 const LanguageContext = createContext();
 
-export const LANGUAGES = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-    { code: 'ua', name: 'Українська', flag: '🇺🇦' },
-    { code: 'ca', name: 'Català', flag: '🏴󠁥󠁳󠁣󠁴󠁿' },
-    { code: 'va', name: 'Valencià', flag: '🥘' }
-];
 
 export const LanguageProvider = ({ children }) => {
     const [language, setLanguage] = useState('es'); // Default to Spanish as per locale
