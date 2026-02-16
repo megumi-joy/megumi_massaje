@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
@@ -63,7 +63,6 @@ const AnimatedText = ({ text, className, style, delay = 0 }) => {
 
 const MainPage = () => {
     const { t } = useLanguage();
-    const [isBookingOpen, setIsBookingOpen] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [activeLocation, setActiveLocation] = useState('Sitges');
     const [servicesData, setServicesData] = useState(SERVICES);
@@ -149,7 +148,7 @@ const MainPage = () => {
             }}>
                 <h2 style={{ margin: 0, fontSize: '1.5rem' }}>Megumi Massaje</h2>
                 <button
-                    onClick={() => setIsBookingOpen(true)}
+                    onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
                     style={{
                         background: 'var(--color-accent)',
                         color: 'var(--color-bg-primary)',
@@ -228,7 +227,7 @@ const MainPage = () => {
                             {t('View Treatments', { en: 'View Treatments', es: 'Ver Tratamientos', ru: 'Процедуры', ua: 'Процедури', ca: 'Veure Tractaments', va: 'Veure Tractaments' })}
                         </button>
                         <button
-                            onClick={() => setIsBookingOpen(true)}
+                            onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
                             style={{
                                 padding: '1rem 2.5rem',
                                 background: 'var(--color-accent)',

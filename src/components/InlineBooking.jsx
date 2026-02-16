@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { User, Calendar, CheckCircle, Info } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { supabase } from '../utils/supabaseClient';

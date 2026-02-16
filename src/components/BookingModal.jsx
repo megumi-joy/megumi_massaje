@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, MapPin, User, Phone, CheckCircle, ChevronRight, ChevronLeft, MessageSquare } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -19,9 +19,9 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
     });
 
     const [availableDates, setAvailableDates] = useState([]);
-    const [availableTimes, setAvailableTimes] = useState([
+    const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-    ]);
+    ];
 
     useEffect(() => {
         if (isOpen) {
@@ -78,9 +78,6 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
         }
     };
 
-    const formatDate = (date) => {
-        return date.toLocaleDateString(language === 'ru' ? 'ru-RU' : 'en-US', { day: 'numeric', month: 'short', weekday: 'short' });
-    };
 
     const isStep1Valid = formData.name && formData.phone;
     const isStep2Valid = formData.date && formData.time;

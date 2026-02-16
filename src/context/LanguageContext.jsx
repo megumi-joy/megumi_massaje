@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from 'react';
-import { LANGUAGES } from '../data/languages';
 
 const LanguageContext = createContext();
 

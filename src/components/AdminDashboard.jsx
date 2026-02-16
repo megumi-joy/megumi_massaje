@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
@@ -32,9 +32,9 @@ const AdminDashboard = () => {
                 fetchServicesFromDB();
             }
         }
-    }, [isAuthenticated, activeTab, selectedLocation]);
+    }, [isAuthenticated, activeTab, fetchBookings, fetchServicesFromDB]);
 
-    const fetchServicesFromDB = async () => {
+    const fetchServicesFromDB = useCallback(async () => {
         if (!supabase) return;
         setIsLoading(true);
         try {
@@ -58,9 +58,9 @@ const AdminDashboard = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
-    const fetchBookings = async () => {
+    const fetchBookings = useCallback(async () => {
         if (!supabase) return;
         const { data, error } = await supabase
             .from('appointments')
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
 
         if (error) console.error('Error fetching bookings:', error);
         else setBookings(data || []);
-    };
+    }, [selectedLocation]);
 
     if (!isAuthenticated) {
         return (
@@ -143,7 +143,7 @@ const AdminDashboard = () => {
                                         <h3 style={{ margin: 0 }}>{booking.name}</h3>
                                         <p>{booking.date} at {booking.time}</p>
                                         <p style={{ color: 'var(--color-text-secondary)' }}>{booking.phone}</p>
-                                        {booking.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>"{booking.notes}"</p>}
+                                        {booking.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>&quot;{booking.notes}&quot;</p>}
                                     </div>
                                     <div style={{ textAlign: 'right' }}>
                                         <span style={{ background: 'var(--color-nature-green)', color: 'var(--color-bg-primary)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>
