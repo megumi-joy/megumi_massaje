@@ -27,6 +27,7 @@ export const SERVICES = {
                     ca: "Antic sistema de curació que combina acupressió i estiraments de ioga. Reconegut per la UNESCO.",
                     va: "Antic sistema de curació que combina acupressió i estiraments de ioga. Reconegut per la UNESCO."
                 },
+                image: "https://images.unsplash.com/photo-1544161515-4ae6ce6dbec6?auto=format&fit=crop&q=80&w=1200",
                 prices: [
                     { duration: 45, price: 46 },
                     { duration: 60, price: 60 },
@@ -52,6 +53,7 @@ export const SERVICES = {
                     ca: "És un massatge a tota l'esquena, espatlles, coll i cap, adequat per a persones amb dolors cervicals.",
                     va: "És un massatge a tota l'esquena, espatlles, coll i cap, adequat per a persones amb dolors cervicals."
                 },
+                image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc206e?auto=format&fit=crop&q=80&w=1200",
                 prices: [
                     { duration: 30, price: 35 },
                     { duration: 45, price: 46 },
@@ -124,6 +126,7 @@ export const SERVICES = {
                     ca: "Tècnica que utilitza compreses d'herbes calentes al vapor per relaxar i calmar el dolor muscular.",
                     va: "Tècnica que utilitza compreses d'herbes calentes al vapor per relaxar i calmar el dolor muscular."
                 },
+                image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=1200",
                 prices: [
                     { duration: 60, price: 65 },
                     { duration: 90, price: 89 }
@@ -147,6 +150,7 @@ export const SERVICES = {
                     ca: "Teràpia de pressió en punts específics dels peus per equilibrar sistemes i alleujar dolor.",
                     va: "Teràpia de pressió en punts específics dels peus per equilibrar sistemes i alleujar dolor."
                 },
+                image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1200",
                 prices: [
                     { duration: 30, price: 30 },
                     { duration: 45, price: 44 }
@@ -170,6 +174,7 @@ export const SERVICES = {
                     ca: "Combinació especial d'herbes, massatge amb oli de Lemongrass o Taronja i reflexologia.",
                     va: "Combinació especial d'herbes, massatge amb oli de Lemongrass o Taronja i reflexologia."
                 },
+                image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=1200",
                 prices: [
                     { duration: 90, price: 95 },
                     { duration: 120, price: 125 }

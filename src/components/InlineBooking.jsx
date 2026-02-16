@@ -118,7 +118,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                 </div>
 
                 {/* Panel 2: Date & Time */}
-                <div style={{ ...panelStyle, flex: 1.5 }}>
+                <div style={{ ...panelStyle, flex: 2 }}>
                     <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time')}</h3>
                     <div style={panelBody}>
                         <div style={dateScroll}>
@@ -146,6 +146,10 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                     {time}
                                 </button>
                             ))}
+                        </div>
+                        <div style={transparencyInfo}>
+                            <Info size={14} />
+                            <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.')}</span>
                         </div>
                     </div>
                 </div>
@@ -225,17 +229,35 @@ const cancelButton = {
 };
 
 const threePanelLayout = {
-    display: 'flex',
-    gap: '2rem',
-    flexWrap: 'wrap'
+    display: 'grid',
+    gridTemplateColumns: '1fr 1.5fr 1fr',
+    gap: '1.5rem',
+    alignItems: 'start'
 };
 
 const panelStyle = {
-    flex: 1,
-    minWidth: '300px',
+    background: 'rgba(255,255,255,0.03)',
+    padding: '1.5rem',
+    borderRadius: '16px',
+    border: '1px solid rgba(255,255,255,0.05)',
     display: 'flex',
     flexDirection: 'column',
-    gap: '1rem'
+    gap: '1rem',
+    height: '100%',
+    boxShadow: '0 5px 15px rgba(0,0,0,0.1)'
+};
+
+const transparencyInfo = {
+    marginTop: '1rem',
+    padding: '0.8rem',
+    background: 'rgba(255, 215, 0, 0.05)',
+    borderRadius: '8px',
+    fontSize: '0.8rem',
+    color: 'var(--color-text-secondary)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    lineHeight: '1.4'
 };
 
 const panelTitle = {

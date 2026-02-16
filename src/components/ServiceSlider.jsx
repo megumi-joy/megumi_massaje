@@ -29,9 +29,8 @@ const ServiceSlider = ({ services, onSelect }) => {
                     style={sliderContent}
                 >
                     <div style={imageWrapper}>
-                        {/* We don't have unique images per service yet, so we use a fallback placeholder that looks premium */}
                         <img
-                            src={`https://images.unsplash.com/photo-1544161515-4ae6ce6dbec6?auto=format&fit=crop&q=80&w=800`}
+                            src={currentService.image || `https://images.unsplash.com/photo-1544161515-4ae6ce6dbec6?auto=format&fit=crop&q=80&w=1200`}
                             alt={t(currentService.name)}
                             style={serviceImage}
                         />
@@ -39,6 +38,14 @@ const ServiceSlider = ({ services, onSelect }) => {
                     </div>
 
                     <div style={detailsWrapper}>
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            style={categoryBadge}
+                        >
+                            {t('Exclusive Treatment')}
+                        </motion.div>
                         <h3 style={serviceTitle}>{t(currentService.name)}</h3>
                         <p style={serviceDescription}>{t(currentService.description)}</p>
 
@@ -125,19 +132,31 @@ const imageOverlay = {
 
 const detailsWrapper = {
     flex: '1',
-    padding: '3rem',
+    padding: '4rem 3rem',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    gap: '1.5rem',
-    zIndex: 1
+    gap: '1rem',
+    zIndex: 1,
+    position: 'relative'
+};
+
+const categoryBadge = {
+    color: 'var(--color-nature-green)',
+    fontSize: '0.9rem',
+    fontWeight: 'bold',
+    letterSpacing: '2px',
+    textTransform: 'uppercase',
+    marginBottom: '0.5rem'
 };
 
 const serviceTitle = {
-    fontSize: '2.5rem',
+    fontSize: '3rem',
     margin: 0,
     color: 'var(--color-accent)',
-    fontFamily: 'serif'
+    fontFamily: 'serif',
+    lineHeight: 1.1,
+    textShadow: '0 2px 10px rgba(0,0,0,0.3)'
 };
 
 const serviceDescription = {
