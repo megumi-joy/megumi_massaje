@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
 import { supabase } from '../utils/supabaseClient';
@@ -65,6 +66,7 @@ const AnimatedText = ({ text, className, style, delay = 0 }) => {
 
 const MainPage = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
     const [selectedService, setSelectedService] = useState(null);
     const [activeLocation, setActiveLocation] = useState('Sitges');
     const [servicesData, setServicesData] = useState(SERVICES);

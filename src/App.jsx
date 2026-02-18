@@ -5,6 +5,8 @@ import { LanguageProvider } from './context/LanguageContext';
 import Landing from './components/Landing';
 import MainPage from './components/MainPage';
 import AdminDashboard from './components/AdminDashboard';
+import TeachingPlatform from './components/TeachingPlatform';
+import AuthModal from './components/AuthModal'; // Import if needed globally, though it's in MainPage now
 import './styles/index.css';
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
                 <AnimatePresence mode="wait">
                     <Routes>
                         <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/teaching" element={<TeachingPlatform />} />
                         <Route path="*" element={
                             <>
                                 <Landing onEnter={scrollToMain} />
