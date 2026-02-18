@@ -249,5 +249,83 @@ export const SERVICES = {
                 ]
             }
         ]
+    },
+    online: {
+        title: {
+            en: "Online Services",
+            es: "Servicios Online",
+            ru: "Онлайн Услуги",
+            ua: "Онлайн Послуги",
+            ca: "Serveis Online",
+            va: "Serveis Online"
+        },
+        items: [
+            {
+                id: "online-consultation",
+                name: {
+                    en: "Online Consultation / Instructional Massage",
+                    es: "Consulta Online / Masaje Instructivo",
+                    ru: "Онлайн Консультация / Обучающий Массаж",
+                    ua: "Онлайн Консультація / Навчальний Масаж",
+                    ca: "Consulta Online / Massatge Instructiu",
+                    va: "Consulta Online / Massatge Instructiu"
+                },
+                description: {
+                    en: "Learn massage techniques for partners or get professional advice remotely.",
+                    es: "Aprende técnicas de masaje para parejas o recibe consejos profesionales a distancia.",
+                    ru: "Изучите техники массажа для партнеров или получите профессиональный совет удаленно.",
+                    ua: "Вивчіть техніки масажу для партнерів або отримайте професійну пораду віддалено.",
+                    ca: "Aprèn tècniques de massatge per a parelles o rep consells professionals a distància.",
+                    va: "Aprèn tècniques de massatge per a parelles o rep consells professionals a distància."
+                },
+                prices: [
+                    { duration: 60, price: 40 }
+                ]
+            },
+            {
+                id: "online-energy",
+                name: {
+                    en: "Online Energy Therapy",
+                    es: "Terapia Energética Online",
+                    ru: "Онлайн Энергетическая Терапия",
+                    ua: "Онлайн Енергетична Терапія",
+                    ca: "Teràpia Energètica Online",
+                    va: "Teràpia Energètica Online"
+                },
+                description: {
+                    en: "Distance energy healing session to restore balance and well-being.",
+                    es: "Sesión de sanación energética a distancia para restaurar el equilibrio y el bienestar.",
+                    ru: "Сеанс дистанционного энергетического исцеления для восстановления баланса и благополучия.",
+                    ua: "Сеанс дистанційного енергетичного зцілення для відновлення балансу та благополуччя.",
+                    ca: "Sessió de sanació energètica a distància per restaurar l'equilibri i el benestar.",
+                    va: "Sessió de sanació energètica a distància per restaurar l'equilibri i el benestar."
+                },
+                prices: [
+                    { duration: 45, price: 35 }
+                ]
+            },
+            {
+                id: "online-session",
+                name: {
+                    en: "Online Session",
+                    es: "Sesión Online",
+                    ru: "Онлайн Сессия",
+                    ua: "Онлайн Сесія",
+                    ca: "Sessió Online",
+                    va: "Sessió Online"
+                },
+                description: {
+                    en: "General online consultation for personalized wellness advice.",
+                    es: "Consulta online general para consejos de bienestar personalizados.",
+                    ru: "Общая онлайн-консультация для персональных советов по оздоровлению.",
+                    ua: "Загальна онлайн-консультація для персональних порад щодо оздоровлення.",
+                    ca: "Consulta online general per a consells de benestar personalitzats.",
+                    va: "Consulta online general per a consells de benestar personalitzats."
+                },
+                prices: [
+                    { duration: 30, price: 25 }
+                ]
+            }
+        ]
     }
 };

@@ -42,3 +42,30 @@ Your Supabase project should have the following tables:
 - `duration`: text
 - `price`: integer
 - `order`: integer
+
+#### `events`
+- `id`: uuid (primary key, default: gen_random_uuid())
+- `title`: text
+- `description`: text
+- `date`: timestamp with time zone
+- `location`: text
+- `type`: text (e.g., 'game', 'class', 'meeting')
+- `price`: integer
+- `max_participants`: integer
+- `created_at`: timestamp with time zone (default: now())
+
+#### `event_registrations`
+- `id`: uuid (primary key, default: gen_random_uuid())
+- `event_id`: uuid (foreign key references events.id)
+- `user_email`: text
+- `user_name`: text
+- `user_name`: text
+- `status`: text (default: 'registered')
+- `created_at`: timestamp with time zone (default: now())
+
+#### `profiles` (New)
+- `id`: uuid (primary key, references auth.users.id)
+- `full_name`: text
+- `phone`: text
+- `avatar_url`: text
+- `updated_at`: timestamp with time zone

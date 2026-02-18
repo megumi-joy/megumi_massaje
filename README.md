@@ -61,3 +61,26 @@ The output will be in the `dist` directory.
 To enable the full booking functionality, you need to configure a Supabase project.
 
 👉 See [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for detailed instructions on setting up the database and environment variables.
+
+## Admin Guide
+
+To access the administrative panel:
+1.  Navigate to `/admin` (e.g., `http://localhost:5173/admin` or `https://megumi-joy.github.io/megumi_massaje/admin`).
+2.  Enter the PIN: **1234** (Default for MVP).
+
+### Features
+-   **Bookings**: View upcoming appointments in Sitges and Murcia.
+-   **Manage Events**: Create, list, and delete events (games, classes, meetings).
+-   **Services**: View current service list (editing coming soon).
+
+## Roadmap & Future Improvements
+
+Here are some ideas to further enhance the platform:
+
+-   [ ] **User Accounts**: Allow users to sign up, view their booking history, and manage preferences.
+-   [ ] **Online Payments**: Integrate Stripe or PayPal for deposit payments or full booking prepayments.
+-   [ ] **Advanced Booking Slots**: Sync with a real calendar (Google Calendar) to show only available time slots.
+-   [ ] **Blog / Articles**: A section for health tips, massage benefits, and community stories.
+-   [ ] **Gift Cards**: Ability to purchase and redeem digital gift cards.
+-   [ ] **Loyalty Program**: Digital punch card (e.g., "Buy 10 massages, get 1 free").
+
