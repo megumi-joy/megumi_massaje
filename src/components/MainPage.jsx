@@ -209,6 +209,10 @@ const MainPage = () => {
         refMap[key]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
+    const scrollToMain = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div className="main-page">
             <header style={{
