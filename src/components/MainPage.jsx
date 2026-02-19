@@ -174,18 +174,18 @@ const MainPage = () => {
 
     const locations = {
         Sitges: {
-            address: 'Carrer de Sant Gaudenci 26, Sitges 08870',
-            phone: '+34 635 243 458',
+            address: 'Sitges Center - Carrer de Sant Gaudenci (---)',
+            phone: '---',
             map: ''
         },
         Murcia: {
-            address: 'Calle Mayor 42, Murcia 30001',
-            phone: '+34 635 243 458',
+            address: 'Murcia Center - Calle Mayor (---)',
+            phone: '---',
             map: ''
         },
         Online: {
-            address: 'Global (Video Call)',
-            phone: '+34 635 243 458',
+            address: 'Online Session (Zoom/WhatsApp)',
+            phone: '---',
             map: ''
         }
     };
@@ -223,7 +223,12 @@ const MainPage = () => {
                 zIndex: 100,
                 borderBottom: '1px solid rgba(255, 215, 0, 0.1)'
             }}>
-                <h2 style={{ margin: 0, fontSize: '1.5rem' }}>Megumi Massaje</h2>
+                <h2
+                    onClick={scrollToMain}
+                    style={{ margin: 0, fontSize: '1.5rem', cursor: 'pointer' }}
+                >
+                    Megumi Massaje
+                </h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     {user ? (
                         <button
@@ -356,7 +361,7 @@ const MainPage = () => {
                                     boxShadow: '0 0 20px var(--color-accent-glow)'
                                 }}
                             >
-                                {t('Book Now')}
+                                {t('Book Now', { en: 'Book Now', es: 'Reservar', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar' })}
                             </button>
                         </motion.div>
                     </motion.section>
@@ -453,7 +458,14 @@ const MainPage = () => {
                                         boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
                                     }}
                                 >
-                                    {t(item.key)}
+                                    {t(item.key, {
+                                        en: item.key,
+                                        es: item.key === 'Who We Are' ? 'Quiénes Somos' :
+                                            item.key === 'Treatments' ? 'Tratamientos' :
+                                                item.key === 'Benefits' ? 'Beneficios' :
+                                                    item.key === 'Contact' ? 'Contacto' :
+                                                        'Ubicación'
+                                    })}
                                 </motion.button>
                             ))}
                         </div>
@@ -805,22 +817,40 @@ const MainPage = () => {
                             gap: '1rem',
                             boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
                         }}>
-                            <div style={{ width: '100%', height: '300px', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-accent)' }}>
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0 }}
-                                    loading="lazy"
-                                    allowFullScreen
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(locations[activeLocation].address)}`}
-                                >
-                                </iframe>
-                                {/* Note: In a real app, you need a Google Maps API Key. For now, we can use a simple non-API embed or just a link if API key is missing. 
-                                Since we don't have an API key here, let's use a standard search embed or keep the link fallback. 
-                                For this demo to work without a key, we might need to use the 'maps.google.com' output embed format, but that sometimes requires a key too.
-                                Let's switch to a direct link fallback for safety if iframe fails/is restricted.
-                            */}
+                            <div style={{ width: '100%', height: '300px', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-accent)', position: 'relative' }}>
+                                <img
+                                    src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1200"
+                                    alt="Map Location"
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.7)' }}
+                                />
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    textAlign: 'center'
+                                }}>
+                                    <h3 style={{ marginBottom: '1rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>{t('View on Google Maps')}</h3>
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locations[activeLocation].address)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            background: 'var(--color-accent)',
+                                            color: 'var(--color-bg-primary)',
+                                            padding: '0.8rem 1.5rem',
+                                            borderRadius: '50px',
+                                            textDecoration: 'none',
+                                            fontWeight: 'bold',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem'
+                                        }}
+                                    >
+                                        <MapPin size={18} />
+                                        {t('Open Map')}
+                                    </a>
+                                </div>
                             </div>
                             <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locations[activeLocation].address)}`}
@@ -928,6 +958,32 @@ const MainPage = () => {
                 }}
             />
 
+            {/* Back to Top Button */}
+            <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                whileHover={{ scale: 1.1 }}
+                onClick={scrollToMain}
+                style={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    right: '2rem',
+                    background: 'var(--color-accent)',
+                    color: 'var(--color-bg-primary)',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                    zIndex: 90
+                }}
+            >
+                <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>↑</span>
+            </motion.button>
         </div>
     );
 };

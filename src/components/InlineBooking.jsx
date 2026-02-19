@@ -52,7 +52,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                     }]);
 
                 if (error) throw error;
-                alert(t('Booking successful! We will contact you soon.'));
+                alert(t('Booking successful! We will contact you soon.', { en: 'Booking successful! We will contact you soon.', es: '¡Reserva exitosa! Te contactaremos pronto.', ru: 'Бронирование успешно! Мы свяжемся с вами скоро.', ua: "Бронювання успішне! Ми зв'яжемося з вами скоро.", ca: 'Reserva exitosa! Et contactarem aviat.' }));
                 onCancel();
             } catch (error) {
                 console.error('Error:', error);
@@ -60,7 +60,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
             }
         } else {
             console.log('Mock Booking:', formData);
-            alert(t('Thank you! (Demo Mode) We will contact you soon.'));
+            alert(t('Thank you! (Demo Mode) We will contact you soon.', { en: 'Thank you! (Demo Mode) We will contact you soon.', es: '¡Gracias! (Modo Demo) Te contactaremos pronto.', ru: 'Спасибо! (Демо режим) Мы свяжемся с вами скоро.', ua: "Дякуємо! (Демо режим) Ми зв'яжемося з вами скоро.", ca: 'Gràcies! (Mode Demo) Et contactarem aviat.' }));
             onCancel();
         }
     };
@@ -73,26 +73,26 @@ const InlineBooking = ({ selectedService, onCancel }) => {
             style={containerStyle}
         >
             <div style={titleHeader}>
-                <h2>{t('Complete Your Booking')}: <span style={{ color: 'var(--color-accent)' }}>{t(selectedService.name)}</span></h2>
-                <button onClick={onCancel} style={cancelButton}>{t('Cancel')}</button>
+                <h2>{t('Complete Your Booking', { en: 'Complete Your Booking', es: 'Completa tu Reserva', ru: 'Завершите Бронирование', ua: 'Завершіть Бронювання', ca: 'Completa la teva Reserva' })}: <span style={{ color: 'var(--color-accent)' }}>{t(selectedService.name)}</span></h2>
+                <button onClick={onCancel} style={cancelButton}>{t('Cancel', { en: 'Cancel', es: 'Cancelar', ru: 'Отмена', ua: 'Скасувати', ca: 'Cancel·lar' })}</button>
             </div>
 
             <div style={threePanelLayout}>
                 {/* Panel 1: Contact */}
                 <div style={panelStyle}>
-                    <h3 style={panelTitle}><User size={18} /> {t('Contact Info')}</h3>
+                    <h3 style={panelTitle}><User size={18} /> {t('Contact Info', { en: 'Contact Info', es: 'Información de Contacto', ru: 'Контактная Информация', ua: 'Контактна Інформація', ca: 'Informació de Contacte' })}</h3>
                     <div style={panelBody}>
                         <div style={inputField}>
-                            <label>{t('Name')}</label>
+                            <label>{t('Name', { en: 'Name', es: 'Nombre', ru: 'Имя', ua: "Ім'я", ca: 'Nom' })}</label>
                             <input
                                 type="text"
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                placeholder={t('Your full name')}
+                                placeholder={t('Your full name', { en: 'Your full name', es: 'Tu nombre completo' })}
                             />
                         </div>
                         <div style={inputField}>
-                            <label>{t('Phone')}</label>
+                            <label>{t('Phone', { en: 'Phone', es: 'Teléfono', ru: 'Телефон', ua: 'Телефон', ca: 'Telèfon' })}</label>
                             <input
                                 type="tel"
                                 value={formData.phone}
@@ -101,7 +101,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                             />
                         </div>
                         <div style={inputField}>
-                            <label>{t('Location')}</label>
+                            <label>{t('Location', { en: 'Location', es: 'Ubicación', ru: 'Локация', ua: 'Локація', ca: 'Ubicació' })}</label>
                             <div style={radioGroup}>
                                 {['Sitges', 'Murcia'].map(loc => (
                                     <button
@@ -119,7 +119,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
 
                 {/* Panel 2: Date & Time */}
                 <div style={{ ...panelStyle, flex: 2 }}>
-                    <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time')}</h3>
+                    <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time', { en: 'Select Date & Time', es: 'Seleccionar Fecha y Hora' })}</h3>
                     <div style={panelBody}>
                         <div style={dateScroll}>
                             {availableDates.map((date, i) => {
@@ -149,32 +149,32 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                         </div>
                         <div style={transparencyInfo}>
                             <Info size={14} />
-                            <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.')}</span>
+                            <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.', { en: 'All appointments are confirmed manually via WhatsApp/Phone after you book.', es: 'Todas las citas se confirman manualmente por WhatsApp/Teléfono después de reservar.' })}</span>
                         </div>
                     </div>
                 </div>
 
                 {/* Panel 3: Summary & Action */}
                 <div style={panelStyle}>
-                    <h3 style={panelTitle}><CheckCircle size={18} /> {t('Summary')}</h3>
+                    <h3 style={panelTitle}><CheckCircle size={18} /> {t('Summary', { en: 'Summary', es: 'Resumen' })}</h3>
                     <div style={panelBody}>
                         <div style={summaryPreview}>
                             <div style={summaryItem}>
                                 <strong>{t('Service')}:</strong> <span>{t(selectedService.name)}</span>
                             </div>
                             <div style={summaryItem}>
-                                <strong>{t('Where')}:</strong> <span>{formData.location}</span>
+                                <strong>{t('Where', { en: 'Where', es: 'Dónde' })}:</strong> <span>{formData.location}</span>
                             </div>
                             <div style={summaryItem}>
-                                <strong>{t('When')}:</strong> <span>{formData.date || '---'} {formData.time ? `@ ${formData.time}` : ''}</span>
+                                <strong>{t('When', { en: 'When', es: 'Cuándo' })}:</strong> <span>{formData.date || '---'} {formData.time ? `@ ${formData.time}` : ''}</span>
                             </div>
                             <div style={summaryItem}>
-                                <strong>{t('Price')}:</strong> <span style={{ color: 'var(--color-accent)' }}>{selectedService.price}€</span>
+                                <strong>{t('Price', { en: 'Price', es: 'Precio' })}:</strong> <span style={{ color: 'var(--color-accent)' }}>{selectedService.price}€</span>
                             </div>
                         </div>
 
                         <div style={inputField}>
-                            <label>{t('Notes')}</label>
+                            <label>{t('Notes', { en: 'Notes', es: 'Notas' })}</label>
                             <textarea
                                 value={formData.notes}
                                 onChange={e => setFormData({ ...formData, notes: e.target.value })}

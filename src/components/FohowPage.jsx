@@ -214,16 +214,34 @@ const FohowPage = () => {
                 >
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', alignItems: 'center' }}>
                         <Info size={30} color="var(--color-nature-green)" />
-                        <h3 style={{ fontSize: '1.5rem', margin: 0 }}>The Science Behind Fohow</h3>
+                        <h3 style={{ fontSize: '1.5rem', margin: 0 }}>{t('The Science Behind Fohow', {
+                            en: 'The Science Behind Fohow',
+                            es: 'La Ciencia Detrás de Fohow',
+                            ru: 'Наука о Fohow',
+                            ua: 'Наука про Fohow',
+                            ca: 'La Ciència Darrera de Fohow'
+                        })}</h3>
                     </div>
                     <p style={{ lineHeight: '1.8', color: 'var(--color-text-secondary)' }}>
-                        The Fohow Bioenergy Massager works by converting electrical impulses into bioelectricity, which matches the electric charge of human cells. Through the use of conductive gloves, the therapist delivers this energy into the client's meridians. This process helps to clear blockages, improve blood circulation, and restore the body's natural balance. It is often described as combining the effects of acupuncture, massage, cupping, and gua sha in a single treatment.
+                        {t('Fohow Science Content', {
+                            en: "The Fohow Bioenergy Massager works by converting electrical impulses into bioelectricity, which matches the electric charge of human cells. Through the use of conductive gloves, the therapist delivers this energy into the client's meridians. This process helps to clear blockages, improve blood circulation, and restore the body's natural balance. It is often described as combining the effects of acupuncture, massage, cupping, and gua sha in a single treatment.",
+                            es: "El masajeador bioenergético Fohow funciona convirtiendo impulsos eléctricos en bioelectricidad, que coincide con la carga eléctrica de las células humanas. Mediante el uso de guantes conductores, el terapeuta entrega esta energía en los meridianos del cliente. Este proceso ayuda a eliminar bloqueos, mejorar la circulación sanguínea y restaurar el equilibrio natural del cuerpo. A menudo se describe como la combinación de los efectos de la acupuntura, el masaje, las ventosas y el gua sha en un solo tratamiento.",
+                            ru: "Биоэнергетический массажер Fohow работает путем преобразования электрических импульсов в биоэлектричество, которое соответствует электрическому заряду клеток человека. С помощью проводящих перчаток терапевт передает эту энергию в меридианы клиента. Этот процесс помогает устранить блокировки, улучшить кровообращение и восстановить естественный баланс организма. Его часто описывают как сочетание эффектов иглоукалывания, массажа, банок и гуаша в одной процедуре.",
+                            ua: "Біоенергетичний масажер Fohow працює шляхом перетворення електричних імпульсів у біоелектрику, яка відповідає електричному заряду клітин людини. За допомогою провідних рукавичок терапевт передає цю енергію в меридіани клієнта. Цей процес допомагає усунути блокування, покращити кровообіг і відновити природний баланс організму. Його часто описують як поєднання ефектів акупунктури, масажу, банок і гуаша в одній процедурі.",
+                            ca: "El massatger bioenergètic Fohow funciona convertint impulsos elèctrics en bioelectricitat, que coincideix amb la càrrega elèctrica de les cèl·lules humanes. Mitjançant l'ús de guants conductors, el terapeuta lliura aquesta energia en els meridians del client. Aquest procés ajuda a eliminar bloquejos, millorar la circulació sanguínia i restaurar l'equilibri natural del cos. Sovint es descriu com la combinació dels efectes de l'acupuntura, el massatge, les ventoses i el gua sha en un sol tractament."
+                        })}
                     </p>
                 </motion.section>
 
                 {/* Booking Call to Action */}
                 <div id="fohow-booking" style={{ textAlign: 'center', padding: '4rem 0' }}>
-                    <h2 style={{ marginBottom: '2rem' }}>Ready to experience the difference?</h2>
+                    <h2 style={{ marginBottom: '2rem' }}>{t('Ready to experience the difference?', {
+                        en: 'Ready to experience the difference?',
+                        es: '¿Listo para experimentar la diferencia?',
+                        ru: 'Готовы почувствовать разницу?',
+                        ua: 'Готові відчути різницю?',
+                        ca: 'A punt per experimentar la diferència?'
+                    })}</h2>
                     <button
                         onClick={() => navigate('/', { state: { scrollTo: 'treatments' } })}
                         style={{
