@@ -553,6 +553,30 @@ const MainPage = () => {
                         }}>
                             {t('FohowContent')}
                         </p>
+                        <button
+                            onClick={() => navigate('/fohow')}
+                            style={{
+                                marginTop: '2rem',
+                                padding: '0.8rem 2rem',
+                                background: 'transparent',
+                                border: '1px solid var(--color-nature-green)',
+                                color: 'var(--color-nature-green)',
+                                borderRadius: '50px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.background = 'var(--color-nature-green)';
+                                e.target.style.color = 'var(--color-bg-primary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.background = 'transparent';
+                                e.target.style.color = 'var(--color-nature-green)';
+                            }}
+                        >
+                            {t('Learn More', { en: 'Learn More', es: 'Saber Más', ru: 'Подробнее', ua: 'Детальніше', ca: 'Saber Més' })}
+                        </button>
                     </motion.section>
 
                     <div ref={treatmentsRef} />

@@ -6,6 +6,7 @@ import Landing from './components/Landing';
 import MainPage from './components/MainPage';
 import AdminDashboard from './components/AdminDashboard';
 import TeachingPlatform from './components/TeachingPlatform';
+import FohowPage from './components/FohowPage';
 import AuthModal from './components/AuthModal'; // Import if needed globally, though it's in MainPage now
 import './styles/index.css';
 
@@ -23,6 +24,7 @@ function App() {
                     <Routes>
                         <Route path="/admin" element={<AdminDashboard />} />
                         <Route path="/teaching" element={<TeachingPlatform />} />
+                        <Route path="/fohow" element={<FohowPage />} />
                         <Route path="*" element={
                             <>
                                 <Landing onEnter={scrollToMain} />
