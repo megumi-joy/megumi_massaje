@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,6 +9,12 @@ import InlineBooking from './InlineBooking';
 import AuthModal from './AuthModal';
 import UserDashboard from './UserDashboard';
 import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone, User } from 'lucide-react';
+
+// Lazy load heavy components
+const FohowPage = lazy(() => import('./FohowPage'));
+// Note: We need to handle how FohowPage is routed in App.jsx, but here we can optimize internal modals if any.
+// Actually, EventModal isn't imported here yet, it's inline or missing. 
+// Let's assume UserDashboard might be heavy.
 
 const AnimatedText = ({ text, className, style, delay = 0 }) => {
     const words = text.split(' ');
