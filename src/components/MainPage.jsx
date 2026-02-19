@@ -603,74 +603,7 @@ const MainPage = () => {
 
                     <div ref={treatmentsRef} />
 
-                    {/* Events Section */}
-                    <motion.section
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        style={{ padding: '4rem 0' }}
-                    >
-                        <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>
-                            {t('Upcoming Events & Games', { en: 'Upcoming Events & Games', es: 'Próximos Eventos y Juegos', ru: 'Предстоящие События и Игры', ua: 'Майбутні Події та Ігри', ca: 'Propers Esdeveniments i Jocs', va: 'Propers Esdeveniments i Jocs' })}
-                        </h2>
 
-                        {events.length === 0 ? (
-                            <p style={{ textAlign: 'center', opacity: 0.7 }}>No upcoming events scheduled.</p>
-                        ) : (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                                {events.map(event => (
-                                    <motion.div
-                                        key={event.id}
-                                        whileHover={{ y: -5 }}
-                                        style={{
-                                            background: 'var(--color-bg-secondary)',
-                                            borderRadius: '16px',
-                                            overflow: 'hidden',
-                                            border: '1px solid rgba(255, 215, 0, 0.1)'
-                                        }}
-                                    >
-                                        <div style={{ padding: '1.5rem' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                                                <span style={{ background: 'var(--color-accent)', color: 'var(--color-bg-primary)', padding: '0.2rem 0.8rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                                    {event.type.toUpperCase()}
-                                                </span>
-                                                <span style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
-                                                    {new Date(event.date).toLocaleDateString()}
-                                                </span>
-                                            </div>
-                                            <h3 style={{ marginBottom: '0.5rem' }}>{event.title}</h3>
-                                            <p style={{ opacity: 0.8, marginBottom: '1rem' }}>{event.description}</p>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem' }}>
-                                                    <MapPin size={16} color="var(--color-accent)" />
-                                                    {event.location}
-                                                </div>
-                                                <div style={{ fontWeight: 'bold', color: 'var(--color-nature-green)' }}>
-                                                    {event.price === 0 ? 'Free' : `€${event.price}`}
-                                                </div>
-                                            </div>
-                                            <button
-                                                onClick={() => handleJoinEvent(event)}
-                                                style={{
-                                                    width: '100%',
-                                                    marginTop: '1.5rem',
-                                                    padding: '0.8rem',
-                                                    background: 'transparent',
-                                                    border: '1px solid var(--color-accent)',
-                                                    color: 'var(--color-accent)',
-                                                    borderRadius: '8px',
-                                                    cursor: 'pointer',
-                                                    fontWeight: 'bold'
-                                                }}
-                                            >
-                                                {t('Join / Register', { en: 'Join / Register', es: 'Unirse / Registrarse', ru: 'Присоединиться', ua: 'Приєднатися', ca: 'Unir-se', va: 'Unir-se' })}
-                                            </button>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        )}
-                    </motion.section>
 
                     {/* Event Registration Modal */}
                     <AnimatePresence>
@@ -933,6 +866,26 @@ const MainPage = () => {
                             ))}
                         </div>
                     </motion.section>
+
+                    {/* Events Link Section - Replaced large section */}
+                    <div style={{ textAlign: 'center', padding: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <h3 style={{ marginBottom: '1rem' }}>Interested in Community Events?</h3>
+                        <button
+                            onClick={() => navigate('/events')}
+                            style={{
+                                padding: '0.8rem 2rem',
+                                background: 'transparent',
+                                border: '1px solid var(--color-accent)',
+                                color: 'var(--color-accent)',
+                                borderRadius: '50px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold'
+                            }}
+                        >
+                            View Upcoming Events & Workshops →
+                        </button>
+                    </div>
+
                 </main>
             )}
 

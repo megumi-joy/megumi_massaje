@@ -6,8 +6,9 @@ import Landing from './components/Landing';
 import MainPage from './components/MainPage';
 import AdminDashboard from './components/AdminDashboard';
 import TeachingPlatform from './components/TeachingPlatform';
-// Lazy load FohowPage
+// Lazy load FohowPage and EventsPage
 const FohowPage = lazy(() => import('./components/FohowPage'));
+const EventsPage = lazy(() => import('./components/EventsPage'));
 import AuthModal from './components/AuthModal'; // Import if needed globally, though it's in MainPage now
 import './styles/index.css';
 
@@ -27,6 +28,7 @@ function App() {
                             <Route path="/admin" element={<AdminDashboard />} />
                             <Route path="/teaching" element={<TeachingPlatform />} />
                             <Route path="/fohow" element={<FohowPage />} />
+                            <Route path="/events" element={<EventsPage />} />
                             <Route path="*" element={
                                 <>
                                     <Landing onEnter={scrollToMain} />
