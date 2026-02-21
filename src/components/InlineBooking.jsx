@@ -17,6 +17,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
     });
 
     const [availableDates, setAvailableDates] = useState([]);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
     ];
@@ -30,6 +31,10 @@ const InlineBooking = ({ selectedService, onCancel }) => {
             dates.push(d);
         }
         setAvailableDates(dates);
+
+        const handleResize = () => setIsMobile(window.innerWidth < 1024);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const isReady = formData.name && formData.phone && formData.date && formData.time;
@@ -78,7 +83,10 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                 <button onClick={onCancel} style={cancelButton}>{t('Cancel', { en: 'Cancel', es: 'Cancelar', ru: 'Отмена', ua: 'Скасувати', ca: 'Cancel·lar' })}</button>
             </div>
 
-            <div style={threePanelLayout}>
+            <div style={{
+                ...threePanelLayout,
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr 1fr'
+            }}>
                 {/* Panel 1: Contact */}
                 <div style={panelStyle}>
                     <h3 style={panelTitle}><User size={18} /> {t('Contact Info', { en: 'Contact Info', es: 'Información de Contacto', ru: 'Контактная Информация', ua: 'Контактна Інформація', ca: 'Informació de Contacte' })}</h3>

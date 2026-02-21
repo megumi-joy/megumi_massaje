@@ -19,6 +19,7 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
         notes: ''
     });
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
     const [availableDates, setAvailableDates] = useState([]);
     const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
@@ -42,6 +43,10 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                 }));
             }
         }
+
+        const handleResize = () => setIsMobile(window.innerWidth < 1024);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, [isOpen, preSelectedService]);
 
     if (!isOpen) return null;
@@ -96,7 +101,12 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                     initial={{ scale: 0.9, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: 20 }}
-                    style={modalStyle}
+                    style={{
+                        ...modalStyle,
+                        padding: isMobile ? '1.5rem 1rem' : '2rem',
+                        maxHeight: isMobile ? '95vh' : '90vh',
+                        borderRadius: isMobile ? '16px' : '24px'
+                    }}
                     onClick={e => e.stopPropagation()}
                 >
                     <button onClick={onClose} style={closeButtonStyle}><X /></button>
