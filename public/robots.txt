@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://megumi-joy.github.io/megumi_massaje/sitemap.xml

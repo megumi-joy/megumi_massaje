@@ -305,75 +305,81 @@ const MainPage = () => {
             ) : (
                 <main className="container" style={{ paddingBottom: '4rem' }}>
 
-                    {/* Hero Section */}
+                    {/* Core Services Section */}
                     <motion.section
-                        initial={{ opacity: 0, y: 50 }}
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.8 }}
-                        style={{ textAlign: 'center', padding: '4rem 0' }}
+                        viewport={{ once: true }}
+                        style={{ padding: '4rem 0' }}
                     >
-                        <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', display: 'block' }}>
-                            <AnimatedText text={t('Relax & Rejuvenate', {
-                                en: 'Relax & Rejuvenate',
-                                es: 'Relájate y Rejuvenece',
-                                ru: 'Расслабление и Омоложение',
-                                ua: 'Розслаблення та Омолодження',
-                                ca: 'Relaxa\'t i Re rejoveneix',
-                                va: 'Relaxa\'t i Re rejoveneix'
-                            })} />
-                        </h1>
-                        <AnimatedText
-                            delay={0.5}
-                            style={{ color: 'var(--color-text-secondary)', maxWidth: '600px', margin: '0 auto' }}
-                            text={t('Experience ancient healing techniques in a modern sanctuary.', {
-                                en: 'Experience ancient healing techniques in a modern sanctuary.',
-                                es: 'Experimenta técnicas de curación antiguas en un santuario moderno.',
-                                ru: 'Откройте для себя древние техники исцеления в современном святилище.',
-                                ua: 'Відкрийте для себе стародавні техніки зцілення в сучасному святилищі.',
-                                ca: 'Experimenta tècniques de curació antigues en un santuario modern.',
-                                va: 'Experimenta tècniques de curació antigues en un santuario modern.'
-                            })}
-                        />
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1, duration: 0.8 }}
-                            style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '3rem', flexWrap: 'wrap' }}
-                        >
-                            <button
-                                onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
-                                style={{
-                                    padding: '1rem 2.5rem',
-                                    background: 'transparent',
-                                    border: '2px solid var(--color-accent)',
-                                    color: 'var(--color-accent)',
-                                    borderRadius: '50px',
-                                    fontWeight: 'bold',
-                                    fontSize: '1.1rem',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                {t('View Treatments', { en: 'View Treatments', es: 'Ver Tratamientos', ru: 'Процедуры', ua: 'Процедури', ca: 'Veure Tractaments', va: 'Veure Tractaments' })}
-                            </button>
-                            <button
-                                onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
-                                style={{
-                                    padding: '1rem 2.5rem',
-                                    background: 'var(--color-accent)',
-                                    border: '2px solid var(--color-accent)',
-                                    color: 'var(--color-bg-primary)',
-                                    borderRadius: '50px',
-                                    fontWeight: 'bold',
-                                    fontSize: '1.1rem',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 0 20px var(--color-accent-glow)'
-                                }}
-                            >
-                                {t('Book Now', { en: 'Book Now', es: 'Reservar', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar' })}
-                            </button>
-                        </motion.div>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                            gap: '2rem',
+                            padding: '0 1rem'
+                        }}>
+                            {[
+                                {
+                                    title: { en: 'Massage', es: 'Masajes', ru: 'Массаж', ua: 'Масаж', ca: 'Masatges' },
+                                    image: '/massage_service_preview_1771615209396.png',
+                                    action: () => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' }),
+                                    btnText: { en: 'Book Session', es: 'Reservar Sesión', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar Sessió' }
+                                },
+                                {
+                                    title: { en: 'Fohow Bioenergy', es: 'Bioenergía Fohow', ru: 'Fohow Биоэнергия', ua: 'Fohow Біоенергія', ca: 'Bioenergia Fohow' },
+                                    image: '/fohow_service_preview_1771615222147.png',
+                                    action: () => navigate('/fohow'),
+                                    btnText: { en: 'Learn More', es: 'Saber Más', ru: 'Подробнее', ua: 'Детальніше', ca: 'Saber Més' }
+                                },
+                                {
+                                    title: { en: 'Manicure', es: 'Manicura', ru: 'Маникюр', ua: 'Манікюр', ca: 'Manicura' },
+                                    image: '/manicure_service_preview_1771615233921.png',
+                                    action: () => {
+                                        // Scroll to manicure specifically if possible, or just treatments
+                                        treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' });
+                                    },
+                                    btnText: { en: 'Book Manicure', es: 'Reservar Manicura', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar Manicura' }
+                                }
+                            ].map((service, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    whileHover={{ y: -10 }}
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)',
+                                        borderRadius: '24px',
+                                        overflow: 'hidden',
+                                        border: '1px solid rgba(255,215,0,0.1)',
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}
+                                >
+                                    <div style={{
+                                        height: '200px',
+                                        backgroundImage: `url(${service.image})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center'
+                                    }} />
+                                    <div style={{ padding: '1.5rem', textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{t(service.title)}</h3>
+                                        <button
+                                            onClick={service.action}
+                                            style={{
+                                                marginTop: 'auto',
+                                                padding: '0.8rem 1.5rem',
+                                                background: 'var(--color-accent)',
+                                                color: 'var(--color-bg-primary)',
+                                                border: 'none',
+                                                borderRadius: '50px',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            {t(service.btnText)}
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
                     </motion.section>
 
                     {/* UNESCO Highlight */}
@@ -815,75 +821,39 @@ const MainPage = () => {
                     </motion.section>
 
 
-                    {/* Partners Section */}
-                    <motion.section
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        style={{
-                            padding: '4rem 2rem',
-                            background: 'rgba(255, 255, 255, 0.03)',
-                            borderRadius: '24px',
-                            margin: '4rem 0',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>
-                            {t('Friends & Partners', { en: 'Friends & Partners', es: 'Amigos y Socios', ru: 'Друзья и Партнеры', ua: 'Друзі та Партнери', ca: 'Amics i Socis' })}
-                        </h2>
-                        <div style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            gap: '2rem'
-                        }}>
-                            {[
-                                { name: 'Spanish Classes', icon: '🇪🇸', desc: { en: 'Learn Spanish', es: 'Aprende Español' } },
-                                { name: 'Web Development', icon: '💻', desc: { en: 'Programming & Tech', es: 'Programación y Tecnología' } },
-                                { name: 'English Classes', icon: '🇬🇧', desc: { en: 'Learn English', es: 'Aprende Inglés' } }
-                            ].map((partner, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    whileHover={{ scale: 1.05 }}
-                                    style={{
-                                        background: 'var(--color-bg-secondary)',
-                                        padding: '2rem',
-                                        borderRadius: '16px',
-                                        width: '250px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: '1rem',
-                                        border: '1px solid rgba(255, 215, 0, 0.1)'
-                                    }}
-                                >
-                                    <span style={{ fontSize: '3rem' }}>{partner.icon}</span>
-                                    <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{partner.name}</h3>
-                                    <p style={{ margin: 0, opacity: 0.7, fontSize: '0.9rem' }}>
-                                        {t(partner.desc.en, partner.desc)}
-                                    </p>
-                                </motion.div>
-                            ))}
+                    {/* Events Link Section */}
+                    <div style={{ textAlign: 'center', padding: '4rem 2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <h3 style={{ marginBottom: '1.5rem', fontSize: '1.8rem' }}>{t('Join Our Community', { en: 'Join Our Community', es: 'Únete a nuestra Comunidad', ru: 'Присоединяйтесь к нам', ua: 'Приєднуйтесь до нас', ca: 'Uneix-te a la nostra Comunitat' })}</h3>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+                            <button
+                                onClick={() => navigate('/events')}
+                                style={{
+                                    padding: '0.8rem 2rem',
+                                    background: 'transparent',
+                                    border: '1px solid var(--color-accent)',
+                                    color: 'var(--color-accent)',
+                                    borderRadius: '50px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {t('Events & Workshops', { en: 'Events & Workshops', es: 'Eventos y Talleres', ru: 'События и Семинары', ua: 'Події та Семінари', ca: 'Esdeveniments i Tallers' })} →
+                            </button>
+                            <button
+                                onClick={() => navigate('/partners')}
+                                style={{
+                                    padding: '0.8rem 2rem',
+                                    background: 'rgba(255,215,0,0.05)',
+                                    border: '1px solid rgba(255,215,0,0.3)',
+                                    color: 'var(--color-accent)',
+                                    borderRadius: '50px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                {t('Our Friends & Partners', { en: 'Our Friends & Partners', es: 'Nuestros Amigos y Socios', ru: 'Наши Друзья и Партнеры', ua: 'Наші Друзі та Партнери', ca: 'Els Nostres Amics i Socis' })} →
+                            </button>
                         </div>
-                    </motion.section>
-
-                    {/* Events Link Section - Replaced large section */}
-                    <div style={{ textAlign: 'center', padding: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                        <h3 style={{ marginBottom: '1rem' }}>Interested in Community Events?</h3>
-                        <button
-                            onClick={() => navigate('/events')}
-                            style={{
-                                padding: '0.8rem 2rem',
-                                background: 'transparent',
-                                border: '1px solid var(--color-accent)',
-                                color: 'var(--color-accent)',
-                                borderRadius: '50px',
-                                cursor: 'pointer',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            View Upcoming Events & Workshops →
-                        </button>
                     </div>
 
                 </main>

@@ -13,6 +13,7 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
         date: '',
         time: '',
         location: 'Sitges',
+        specialist: 'Any',
         serviceId: preSelectedService?.id || '',
         serviceName: preSelectedService?.name?.en || '',
         notes: ''
@@ -59,7 +60,7 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                         date: formData.date,
                         time: formData.time,
                         location: formData.location.toLowerCase(),
-                        notes: formData.notes,
+                        notes: `[Specialist: ${formData.specialist}] ${formData.notes}`,
                         service_id: formData.serviceId,
                         service_name: formData.serviceName
                     }]);
@@ -145,6 +146,20 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                                         ))}
                                     </div>
                                 </div>
+                                <div style={inputGroup}>
+                                    <label style={labelStyle}><User size={16} /> {t('Specialist', { en: 'Specialist', es: 'Especialista', ru: 'Специалист', ua: 'Спеціаліст', ca: 'Especialista' })}</label>
+                                    <div style={flexRow}>
+                                        {['Any', 'Megumi'].map(spec => (
+                                            <button
+                                                key={spec}
+                                                style={formData.specialist === spec ? activeTabStyle : tabStyle}
+                                                onClick={() => setFormData({ ...formData, specialist: spec })}
+                                            >
+                                                {spec === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera', ru: 'Любой', ua: 'Будь-хто', ca: 'Qualsevol' }) : spec}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
 
@@ -190,6 +205,7 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                                     <p><strong>{t('Service')}:</strong> {preSelectedService ? t(preSelectedService.name) : t('General Wellness')}</p>
                                     <p><strong>{t('Client')}:</strong> {formData.name}</p>
                                     <p><strong>{t('Location')}:</strong> {formData.location}</p>
+                                    <p><strong>{t('With', { en: 'With', es: 'Con' })}:</strong> {formData.specialist === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera' }) : formData.specialist}</p>
                                     <p><strong>{t('When')}:</strong> {formData.date} {t('at')} {formData.time}</p>
                                 </div>
                                 <textarea

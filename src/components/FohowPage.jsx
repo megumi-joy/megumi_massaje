@@ -50,14 +50,14 @@ const FohowPage = () => {
     };
 
     const benefits = [
-        "Detoxification of blood",
-        "Improvement of blood circulation",
-        "Regulation of metabolism",
-        "Relief from muscle and joint pain",
-        "Strengthening of the immune system",
-        "Correction of the spine",
-        "Improvement of sleep quality",
-        "Cellular activation"
+        { en: "Detoxification of blood", es: "Desintoxicación de la sangre", ru: "Детоксикация крови", ua: "Детоксикація крові", ca: "Desintoxicació de la sang" },
+        { en: "Improvement of blood circulation", es: "Mejora de la circulación sanguínea", ru: "Улучшение кровообращения", ua: "Покращення кровообігу", ca: "Millora de la circulació sanguínia" },
+        { en: "Regulation of metabolism", es: "Regulación del metabolismo", ru: "Регуляция обмена веществ", ua: "Регуляція обміну речовин", ca: "Regulació del metabolisme" },
+        { en: "Relief from muscle and joint pain", es: "Alivio del dolor muscular y articular", ru: "Облегчение мышечных и суставных болей", ua: "Полегшення м'язового та суглобового болю", ca: "Alivi del dolor muscular i articular" },
+        { en: "Strengthening of the immune system", es: "Fortalecimiento del sistema inmunológico", ru: "Укрепление иммунной системы", ua: "Зміцнення імунної системи", ca: "Enfortiment del sistema immunològic" },
+        { en: "Correction of the spine", es: "Corrección de la columna vertebral", ru: "Коррекция позвоночника", ua: "Корекція хребта", ca: "Correcció de la columna vertebral" },
+        { en: "Improvement of sleep quality", es: "Mejora de la calidad del sueño", ru: "Улучшение качества сна", ua: "Покращення якості сну", ca: "Millora de la qualitat del son" },
+        { en: "Cellular activation", es: "Activación celular", ru: "Клеточная активация", ua: "Клітинна активація", ca: "Activació cel·lular" }
     ];
 
     return (
@@ -125,7 +125,13 @@ const FohowPage = () => {
                     style={{ textAlign: 'center', margin: '2rem 0 4rem' }}
                 >
                     <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem', color: 'var(--color-nature-green)' }}>
-                        Fohow Bioenergetic Massage
+                        {t('Fohow Bioenergetic Massage', {
+                            en: 'Fohow Bioenergetic Massage',
+                            es: 'Masaje Bioenergético Fohow',
+                            ru: 'Биоэнергетический массаж Fohow',
+                            ua: 'Біоенергетичний масаж Fohow',
+                            ca: 'Masstage Bioenergètic Fohow'
+                        })}
                     </h1>
                     <p style={{
                         fontSize: '1.2rem',
@@ -259,7 +265,13 @@ const FohowPage = () => {
                         {localT('Book Session')}
                     </button>
                     <p style={{ marginTop: '1rem', opacity: 0.7 }}>
-                        *Select "Fohow Bioenergetic Massage" from our treatment list.
+                        *{t('Select Fohow Massage Hint', {
+                            en: 'Select "Fohow Bioenergetic Massage" from our treatment list.',
+                            es: 'Seleccione "Masaje Bioenergético Fohow" de nuestra lista de tratamientos.',
+                            ru: 'Выберите "Биоэнергетический массаж Fohow" из нашего списка услуг.',
+                            ua: 'Оберіть "Біоенергетичний масаж Fohow" з нашого списку послуг.',
+                            ca: 'Seleccioneu "Massatge Bioenergètic Fohow" de la nostra llista de tractaments.'
+                        })}
                     </p>
                 </div>
 

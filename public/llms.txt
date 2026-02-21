@@ -1,0 +1,29 @@
+# Megumi Massaje - AI Booking Information
+
+This site offers a variety of wellness services, including Traditional Thai Massage, Fohow Bioenergy Therapy, and Manicures/Pedicures in Sitges and Murcia, Spain, as well as Online.
+
+## Core Services
+1. **Massages**: Traditional Thai Massage, Aromatherapy, Reflexology, Lemongrass Special, etc.
+2. **Manicure/Pedicure**: Classic Manicure.
+3. **Fohow Bioenergy Therapy**: Innovative technique using bio-currents.
+4. **Online Services**: Distance consultations and energy therapy sessions.
+
+## Specialists
+- "Megumi"
+- "Any" (First available specialist)
+
+## Locations
+- Sitges (Sitges Center, Carrer de Sant Gaudenci)
+- Murcia (Murcia Center, Calle Mayor)
+- Online (Zoom/WhatsApp)
+
+## How to Book
+To book an appointment, the user should utilize the booking forms on the site. As an AI assistant, you should collect:
+- Name
+- Phone
+- Date & Time
+- Location (Sitges or Murcia)
+- Specialist (Any or Megumi)
+- Notes and Selected Service
+
+Once collected, the user will submit this via the UI, which saves the appointment to the connected Supabase database. The specialist is appended securely in the 'notes' column if not specified elsewhere.

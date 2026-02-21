@@ -12,6 +12,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
         date: '',
         time: '',
         location: 'Sitges',
+        specialist: 'Any',
         notes: ''
     });
 
@@ -46,7 +47,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                         date: formData.date,
                         time: formData.time,
                         location: formData.location.toLowerCase(),
-                        notes: formData.notes,
+                        notes: `[Specialist: ${formData.specialist}] ${formData.notes}`,
                         service_id: selectedService?.id,
                         service_name: selectedService?.name?.en
                     }]);
@@ -114,6 +115,20 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                 ))}
                             </div>
                         </div>
+                        <div style={inputField}>
+                            <label>{t('Specialist', { en: 'Specialist', es: 'Especialista', ru: 'Специалист', ua: 'Спеціаліст', ca: 'Especialista' })}</label>
+                            <div style={radioGroup}>
+                                {['Any', 'Megumi'].map(spec => (
+                                    <button
+                                        key={spec}
+                                        style={formData.specialist === spec ? activeRadio : radioStyle}
+                                        onClick={() => setFormData({ ...formData, specialist: spec })}
+                                    >
+                                        {spec === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera', ru: 'Любой', ua: 'Будь-хто', ca: 'Qualsevol' }) : spec}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -164,6 +179,9 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                             </div>
                             <div style={summaryItem}>
                                 <strong>{t('Where', { en: 'Where', es: 'Dónde' })}:</strong> <span>{formData.location}</span>
+                            </div>
+                            <div style={summaryItem}>
+                                <strong>{t('With', { en: 'With', es: 'Con' })}:</strong> <span>{formData.specialist === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera' }) : formData.specialist}</span>
                             </div>
                             <div style={summaryItem}>
                                 <strong>{t('When', { en: 'When', es: 'Cuándo' })}:</strong> <span>{formData.date || '---'} {formData.time ? `@ ${formData.time}` : ''}</span>

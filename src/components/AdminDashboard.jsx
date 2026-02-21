@@ -200,21 +200,65 @@ const AdminDashboard = () => {
                         {bookings.length === 0 ? (
                             <p style={{ color: 'var(--color-text-secondary)', fontStyle: 'italic' }}>No bookings found for {selectedLocation}.</p>
                         ) : (
-                            bookings.map(booking => (
-                                <div key={booking.id} style={{ padding: '1rem', background: 'var(--color-bg-secondary)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between' }}>
-                                    <div>
-                                        <h3 style={{ margin: 0 }}>{booking.name}</h3>
-                                        <p>{booking.date} at {booking.time}</p>
-                                        <p style={{ color: 'var(--color-text-secondary)' }}>{booking.phone}</p>
-                                        {booking.notes && <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>&quot;{booking.notes}&quot;</p>}
+                            bookings.map(booking => {
+                                // Extract the specialist name from notes if present (e.g., "[Specialist: Megumi] Some other notes")
+                                let displayNotes = booking.notes || "";
+                                let specialist = "Any";
+                                const specialistMatch = displayNotes.match(/^\[Specialist:\s*(.*?)\]\s*(.*)$/i);
+                                if (specialistMatch) {
+                                    specialist = specialistMatch[1];
+                                    displayNotes = specialistMatch[2];
+                                }
+
+                                return (
+                                    <div key={booking.id} style={{ padding: '1.5rem', background: 'var(--color-bg-secondary)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', borderLeft: `4px solid var(--color-accent)` }}>
+                                        <div style={{ flex: 1 }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
+                                                <h3 style={{ margin: 0, fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    {booking.name}
+                                                </h3>
+                                                <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', border: '1px solid rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '12px' }}>
+                                                    {booking.phone}
+                                                </span>
+                                            </div>
+
+                                            <div style={{ display: 'flex', gap: '1rem', fontSize: '0.9rem', color: 'var(--color-text-secondary)', marginBottom: '0.8rem' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                                    📅 {new Date(booking.date).toLocaleDateString()}
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                                    ⏰ {booking.time}
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--color-accent)' }}>
+                                                    👩‍⚕️ Specialist: <strong>{specialist}</strong>
+                                                </div>
+                                            </div>
+
+                                            {displayNotes && (
+                                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '0.8rem', borderRadius: '8px', fontSize: '0.9rem', color: 'var(--color-text-primary)' }}>
+                                                    <strong style={{ opacity: 0.7 }}>Notes:</strong> {displayNotes}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: '1rem' }}>
+                                            <span style={{ background: 'var(--color-nature-green)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                                                {booking.service_name}
+                                            </span>
+                                            <span style={{
+                                                marginTop: '1rem',
+                                                color: selectedLocation === 'sitges' ? '#4CAF50' : '#2196F3',
+                                                border: `1px solid ${selectedLocation === 'sitges' ? '#4CAF50' : '#2196F3'}`,
+                                                padding: '0.2rem 0.6rem',
+                                                borderRadius: '50px',
+                                                fontSize: '0.8rem',
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                📍 {selectedLocation}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div style={{ textAlign: 'right' }}>
-                                        <span style={{ background: 'var(--color-nature-green)', color: 'var(--color-bg-primary)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                                            {booking.service_name}
-                                        </span>
-                                    </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>

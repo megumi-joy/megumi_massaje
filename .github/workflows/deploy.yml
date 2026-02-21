@@ -32,6 +32,17 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
+        
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+        
+      - name: Start Preview and Run Tests
+        # We start the built app on port 4173 in the background, give it a few seconds, then run Playwright against it
+        run: |
+          npm run preview &
+          sleep 5
+          TARGET_URL=http://localhost:4173/megumi_massaje/ npx playwright test tests/e2e/deployment.spec.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
