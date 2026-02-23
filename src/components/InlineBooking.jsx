@@ -18,6 +18,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
 
     const [availableDates, setAvailableDates] = useState([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+    const [step, setStep] = useState(1);
     const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
     ];
@@ -37,7 +38,12 @@ const InlineBooking = ({ selectedService, onCancel }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const isReady = formData.name && formData.phone && formData.date && formData.time;
+    const isStep1Ready = formData.name && formData.phone;
+    const isStep2Ready = formData.date && formData.time;
+    const isReady = isStep1Ready && isStep2Ready;
+
+    const handleNext = () => setStep(s => s + 1);
+    const handleBack = () => setStep(s => s - 1);
 
     const handleSubmit = async () => {
         if (!isReady) return;
@@ -83,146 +89,190 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                 <button onClick={onCancel} style={cancelButton}>{t('Cancel', { en: 'Cancel', es: 'Cancelar', ru: 'Отмена', ua: 'Скасувати', ca: 'Cancel·lar' })}</button>
             </div>
 
+            {isMobile && (
+                <div style={stepIndicator}>
+                    {[1, 2, 3].map(i => (
+                        <div
+                            key={i}
+                            style={{
+                                ...stepDot,
+                                background: step >= i ? 'var(--color-accent)' : 'rgba(255,255,255,0.1)'
+                            }}
+                        />
+                    ))}
+                </div>
+            )}
+
             <div style={{
                 ...threePanelLayout,
                 gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr 1fr'
             }}>
                 {/* Panel 1: Contact */}
-                <div style={panelStyle}>
-                    <h3 style={panelTitle}><User size={18} /> {t('Contact Info', { en: 'Contact Info', es: 'Información de Contacto', ru: 'Контактная Информация', ua: 'Контактна Інформація', ca: 'Informació de Contacte' })}</h3>
-                    <div style={panelBody}>
-                        <div style={inputField}>
-                            <label>{t('Name', { en: 'Name', es: 'Nombre', ru: 'Имя', ua: "Ім'я", ca: 'Nom' })}</label>
-                            <input
-                                type="text"
-                                value={formData.name}
-                                onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                placeholder={t('Your full name', { en: 'Your full name', es: 'Tu nombre completo' })}
-                            />
-                        </div>
-                        <div style={inputField}>
-                            <label>{t('Phone', { en: 'Phone', es: 'Teléfono', ru: 'Телефон', ua: 'Телефон', ca: 'Telèfon' })}</label>
-                            <input
-                                type="tel"
-                                value={formData.phone}
-                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                                placeholder="+34 ..."
-                            />
-                        </div>
-                        <div style={inputField}>
-                            <label>{t('Location', { en: 'Location', es: 'Ubicación', ru: 'Локация', ua: 'Локація', ca: 'Ubicació' })}</label>
-                            <div style={radioGroup}>
-                                {['Sitges', 'Murcia'].map(loc => (
-                                    <button
-                                        key={loc}
-                                        style={formData.location === loc ? activeRadio : radioStyle}
-                                        onClick={() => setFormData({ ...formData, location: loc })}
-                                    >
-                                        {loc}
-                                    </button>
-                                ))}
+                {(!isMobile || step === 1) && (
+                    <div style={panelStyle}>
+                        <h3 style={panelTitle}><User size={18} /> {t('Contact Info', { en: 'Contact Info', es: 'Información de Contacto', ru: 'Контактная Информация', ua: 'Контактна Інформація', ca: 'Informació de Contacte' })}</h3>
+                        <div style={panelBody}>
+                            <div style={inputField}>
+                                <label>{t('Name', { en: 'Name', es: 'Nombre', ru: 'Имя', ua: "Ім'я", ca: 'Nom' })}</label>
+                                <input
+                                    type="text"
+                                    value={formData.name}
+                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                    placeholder={t('Your full name', { en: 'Your full name', es: 'Tu nombre completo' })}
+                                />
                             </div>
-                        </div>
-                        <div style={inputField}>
-                            <label>{t('Specialist', { en: 'Specialist', es: 'Especialista', ru: 'Специалист', ua: 'Спеціаліст', ca: 'Especialista' })}</label>
-                            <div style={radioGroup}>
-                                {['Any', 'Megumi'].map(spec => (
-                                    <button
-                                        key={spec}
-                                        style={formData.specialist === spec ? activeRadio : radioStyle}
-                                        onClick={() => setFormData({ ...formData, specialist: spec })}
-                                    >
-                                        {spec === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera', ru: 'Любой', ua: 'Будь-хто', ca: 'Qualsevol' }) : spec}
-                                    </button>
-                                ))}
+                            <div style={inputField}>
+                                <label>{t('Phone', { en: 'Phone', es: 'Teléfono', ru: 'Телефон', ua: 'Телефон', ca: 'Telèfon' })}</label>
+                                <input
+                                    type="tel"
+                                    value={formData.phone}
+                                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                    placeholder="+34 ..."
+                                />
                             </div>
+                            <div style={inputField}>
+                                <label>{t('Location', { en: 'Location', es: 'Ubicación', ru: 'Локация', ua: 'Локація', ca: 'Ubicació' })}</label>
+                                <div style={radioGroup}>
+                                    {['Sitges', 'Murcia'].map(loc => (
+                                        <button
+                                            key={loc}
+                                            style={formData.location === loc ? activeRadio : radioStyle}
+                                            onClick={() => setFormData({ ...formData, location: loc })}
+                                        >
+                                            {loc}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div style={inputField}>
+                                <label>{t('Specialist', { en: 'Specialist', es: 'Especialista', ru: 'Специалист', ua: 'Спеціаліст', ca: 'Especialista' })}</label>
+                                <div style={radioGroup}>
+                                    {['Any', 'Megumi'].map(spec => (
+                                        <button
+                                            key={spec}
+                                            style={formData.specialist === spec ? activeRadio : radioStyle}
+                                            onClick={() => setFormData({ ...formData, specialist: spec })}
+                                        >
+                                            {spec === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera', ru: 'Любой', ua: 'Будь-хто', ca: 'Qualsevol' }) : spec}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            {isMobile && (
+                                <button
+                                    onClick={handleNext}
+                                    disabled={!isStep1Ready}
+                                    style={isStep1Ready ? confirmButton : disabledButton}
+                                >
+                                    {t('Next', { en: 'Next', es: 'Siguiente' })}
+                                </button>
+                            )}
                         </div>
                     </div>
-                </div>
+                )}
 
                 {/* Panel 2: Date & Time */}
-                <div style={{ ...panelStyle, flex: 2 }}>
-                    <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time', { en: 'Select Date & Time', es: 'Seleccionar Fecha y Hora' })}</h3>
-                    <div style={panelBody}>
-                        <div style={dateScroll}>
-                            {availableDates.map((date, i) => {
-                                const dateStr = date.toISOString().split('T')[0];
-                                return (
+                {(!isMobile || step === 2) && (
+                    <div style={{ ...panelStyle, flex: 2 }}>
+                        <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time', { en: 'Select Date & Time', es: 'Seleccionar Fecha y Hora' })}</h3>
+                        <div style={panelBody}>
+                            <div style={dateScroll}>
+                                {availableDates.map((date, i) => {
+                                    const dateStr = date.toISOString().split('T')[0];
+                                    return (
+                                        <button
+                                            key={i}
+                                            style={formData.date === dateStr ? activeDateTile : dateTile}
+                                            onClick={() => setFormData({ ...formData, date: dateStr })}
+                                        >
+                                            <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>{date.toLocaleDateString(language, { weekday: 'short' })}</span>
+                                            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{date.getDate()}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <div style={timeGrid}>
+                                {availableTimes.map(time => (
                                     <button
-                                        key={i}
-                                        style={formData.date === dateStr ? activeDateTile : dateTile}
-                                        onClick={() => setFormData({ ...formData, date: dateStr })}
+                                        key={time}
+                                        style={formData.time === time ? activeTimeChip : timeChip}
+                                        onClick={() => setFormData({ ...formData, time: time })}
                                     >
-                                        <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>{date.toLocaleDateString(language, { weekday: 'short' })}</span>
-                                        <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{date.getDate()}</span>
+                                        {time}
                                     </button>
-                                );
-                            })}
-                        </div>
-                        <div style={timeGrid}>
-                            {availableTimes.map(time => (
-                                <button
-                                    key={time}
-                                    style={formData.time === time ? activeTimeChip : timeChip}
-                                    onClick={() => setFormData({ ...formData, time: time })}
-                                >
-                                    {time}
-                                </button>
-                            ))}
-                        </div>
-                        <div style={transparencyInfo}>
-                            <Info size={14} />
-                            <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.', { en: 'All appointments are confirmed manually via WhatsApp/Phone after you book.', es: 'Todas las citas se confirman manualmente por WhatsApp/Teléfono después de reservar.' })}</span>
+                                ))}
+                            </div>
+                            <div style={transparencyInfo}>
+                                <Info size={14} />
+                                <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.', { en: 'All appointments are confirmed manually via WhatsApp/Phone after you book.', es: 'Todas las citas se confirman manualmente por WhatsApp/Teléfono después de reservar.' })}</span>
+                            </div>
+                            {isMobile && (
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>
+                                    <button
+                                        onClick={handleNext}
+                                        disabled={!isStep2Ready}
+                                        style={isStep2Ready ? confirmButton : disabledButton}
+                                    >
+                                        {t('Next', { en: 'Next', es: 'Siguiente' })}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
-                </div>
+                )}
 
                 {/* Panel 3: Summary & Action */}
-                <div style={panelStyle}>
-                    <h3 style={panelTitle}><CheckCircle size={18} /> {t('Summary', { en: 'Summary', es: 'Resumen' })}</h3>
-                    <div style={panelBody}>
-                        <div style={summaryPreview}>
-                            <div style={summaryItem}>
-                                <strong>{t('Service')}:</strong> <span>{t(selectedService.name)}</span>
+                {(!isMobile || step === 3) && (
+                    <div style={panelStyle}>
+                        <h3 style={panelTitle}><CheckCircle size={18} /> {t('Summary', { en: 'Summary', es: 'Resumen' })}</h3>
+                        <div style={panelBody}>
+                            <div style={summaryPreview}>
+                                <div style={summaryItem}>
+                                    <strong>{t('Service')}:</strong> <span>{t(selectedService.name)}</span>
+                                </div>
+                                <div style={summaryItem}>
+                                    <strong>{t('Where', { en: 'Where', es: 'Dónde' })}:</strong> <span>{formData.location}</span>
+                                </div>
+                                <div style={summaryItem}>
+                                    <strong>{t('With', { en: 'With', es: 'Con' })}:</strong> <span>{formData.specialist === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera' }) : formData.specialist}</span>
+                                </div>
+                                <div style={summaryItem}>
+                                    <strong>{t('When', { en: 'When', es: 'Cuándo' })}:</strong> <span>{formData.date || '---'} {formData.time ? `@ ${formData.time}` : ''}</span>
+                                </div>
+                                <div style={summaryItem}>
+                                    <strong>{t('Price', { en: 'Price', es: 'Precio' })}:</strong> <span style={{ color: 'var(--color-accent)' }}>{selectedService.price}€</span>
+                                </div>
                             </div>
-                            <div style={summaryItem}>
-                                <strong>{t('Where', { en: 'Where', es: 'Dónde' })}:</strong> <span>{formData.location}</span>
+
+                            <div style={inputField}>
+                                <label>{t('Notes', { en: 'Notes', es: 'Notas' })}</label>
+                                <textarea
+                                    value={formData.notes}
+                                    onChange={e => setFormData({ ...formData, notes: e.target.value })}
+                                    style={{ height: '60px' }}
+                                />
                             </div>
-                            <div style={summaryItem}>
-                                <strong>{t('With', { en: 'With', es: 'Con' })}:</strong> <span>{formData.specialist === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera' }) : formData.specialist}</span>
+
+                            <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row' }}>
+                                {isMobile && <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>}
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={!isReady}
+                                    style={isReady ? confirmButton : disabledButton}
+                                >
+                                    {t('Book Now')}
+                                </button>
                             </div>
-                            <div style={summaryItem}>
-                                <strong>{t('When', { en: 'When', es: 'Cuándo' })}:</strong> <span>{formData.date || '---'} {formData.time ? `@ ${formData.time}` : ''}</span>
-                            </div>
-                            <div style={summaryItem}>
-                                <strong>{t('Price', { en: 'Price', es: 'Precio' })}:</strong> <span style={{ color: 'var(--color-accent)' }}>{selectedService.price}€</span>
-                            </div>
+
+                            {!supabase && (
+                                <div style={offlineNotice}>
+                                    <Info size={14} /> {t('Offline fallback active')}
+                                </div>
+                            )}
                         </div>
-
-                        <div style={inputField}>
-                            <label>{t('Notes', { en: 'Notes', es: 'Notas' })}</label>
-                            <textarea
-                                value={formData.notes}
-                                onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                                style={{ height: '60px' }}
-                            />
-                        </div>
-
-                        <button
-                            onClick={handleSubmit}
-                            disabled={!isReady}
-                            style={isReady ? confirmButton : disabledButton}
-                        >
-                            {t('Book Now')}
-                        </button>
-
-                        {!supabase && (
-                            <div style={offlineNotice}>
-                                <Info size={14} /> {t('Offline fallback active')}
-                            </div>
-                        )}
                     </div>
-                </div>
+                )}
             </div>
         </motion.div>
     );
@@ -422,6 +472,20 @@ const offlineNotice = {
     alignItems: 'center',
     gap: '0.3rem',
     justifyContent: 'center'
+};
+
+const stepIndicator = {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '0.5rem',
+    marginBottom: '1.5rem'
+};
+
+const stepDot = {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    transition: 'background 0.3s ease'
 };
 
 export default InlineBooking;

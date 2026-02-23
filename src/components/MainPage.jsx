@@ -892,31 +892,36 @@ const MainPage = () => {
             />
 
             {/* Back to Top Button */}
-            <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                whileHover={{ scale: 1.1 }}
-                onClick={scrollToMain}
-                style={{
-                    position: 'fixed',
-                    bottom: '2rem',
-                    right: '2rem',
-                    background: 'var(--color-accent)',
-                    color: 'var(--color-bg-primary)',
-                    width: '50px',
-                    height: '50px',
-                    borderRadius: '50%',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-                    zIndex: 90
-                }}
-            >
-                <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>↑</span>
-            </motion.button>
+            <AnimatePresence>
+                {!selectedService && (
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        whileHover={{ scale: 1.1 }}
+                        onClick={scrollToMain}
+                        style={{
+                            position: 'fixed',
+                            bottom: '2rem',
+                            right: '2rem',
+                            background: 'var(--color-accent)',
+                            color: 'var(--color-bg-primary)',
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            border: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+                            zIndex: 90
+                        }}
+                    >
+                        <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>↑</span>
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
