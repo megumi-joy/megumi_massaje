@@ -32,6 +32,9 @@ const InlineBooking = ({ selectedService, onCancel }) => {
             dates.push(d);
         }
         setAvailableDates(dates);
+        if (dates.length > 0) {
+            setFormData(prev => ({ ...prev, date: dates[0].toISOString().split('T')[0] }));
+        }
 
         const handleResize = () => setIsMobile(window.innerWidth < 1024);
         window.addEventListener('resize', handleResize);
@@ -207,8 +210,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                 <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.', { en: 'All appointments are confirmed manually via WhatsApp/Phone after you book.', es: 'Todas las citas se confirman manualmente por WhatsApp/Teléfono después de reservar.' })}</span>
                             </div>
                             {isMobile && (
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>
+                                <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
                                     <button
                                         onClick={handleNext}
                                         disabled={!isStep2Ready}
@@ -216,6 +218,7 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                     >
                                         {t('Next', { en: 'Next', es: 'Siguiente' })}
                                     </button>
+                                    <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>
                                 </div>
                             )}
                         </div>
