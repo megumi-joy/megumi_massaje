@@ -18,7 +18,6 @@ const InlineBooking = ({ selectedService, onCancel }) => {
 
     const [availableDates, setAvailableDates] = useState([]);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-    const [step, setStep] = useState(1);
     const availableTimes = [
         '10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00', '20:00'
     ];
@@ -44,9 +43,6 @@ const InlineBooking = ({ selectedService, onCancel }) => {
     const isStep1Ready = formData.name && formData.phone;
     const isStep2Ready = formData.date && formData.time;
     const isReady = isStep1Ready && isStep2Ready;
-
-    const handleNext = () => setStep(s => s + 1);
-    const handleBack = () => setStep(s => s - 1);
 
     const handleSubmit = async () => {
         if (!isReady) return;
@@ -92,26 +88,12 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                 <button onClick={onCancel} style={cancelButton}>{t('Cancel', { en: 'Cancel', es: 'Cancelar', ru: 'Отмена', ua: 'Скасувати', ca: 'Cancel·lar' })}</button>
             </div>
 
-            {isMobile && (
-                <div style={stepIndicator}>
-                    {[1, 2, 3].map(i => (
-                        <div
-                            key={i}
-                            style={{
-                                ...stepDot,
-                                background: step >= i ? 'var(--color-accent)' : 'rgba(255,255,255,0.1)'
-                            }}
-                        />
-                    ))}
-                </div>
-            )}
-
             <div style={{
                 ...threePanelLayout,
                 gridTemplateColumns: isMobile ? '1fr' : '1fr 1.5fr 1fr'
             }}>
                 {/* Panel 1: Contact */}
-                {(!isMobile || step === 1) && (
+                {(true) && (
                     <div style={panelStyle}>
                         <h3 style={panelTitle}><User size={18} /> {t('Contact Info', { en: 'Contact Info', es: 'Información de Contacto', ru: 'Контактная Информация', ua: 'Контактна Інформація', ca: 'Informació de Contacte' })}</h3>
                         <div style={panelBody}>
@@ -161,21 +143,12 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                     ))}
                                 </div>
                             </div>
-                            {isMobile && (
-                                <button
-                                    onClick={handleNext}
-                                    disabled={!isStep1Ready}
-                                    style={isStep1Ready ? confirmButton : disabledButton}
-                                >
-                                    {t('Next', { en: 'Next', es: 'Siguiente' })}
-                                </button>
-                            )}
                         </div>
                     </div>
                 )}
 
                 {/* Panel 2: Date & Time */}
-                {(!isMobile || step === 2) && (
+                {(true) && (
                     <div style={{ ...panelStyle, flex: 2 }}>
                         <h3 style={panelTitle}><Calendar size={18} /> {t('Select Date & Time', { en: 'Select Date & Time', es: 'Seleccionar Fecha y Hora' })}</h3>
                         <div style={panelBody}>
@@ -209,24 +182,12 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                 <Info size={14} />
                                 <span>{t('All appointments are confirmed manually via WhatsApp/Phone after you book.', { en: 'All appointments are confirmed manually via WhatsApp/Phone after you book.', es: 'Todas las citas se confirman manualmente por WhatsApp/Teléfono después de reservar.' })}</span>
                             </div>
-                            {isMobile && (
-                                <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                                    <button
-                                        onClick={handleNext}
-                                        disabled={!isStep2Ready}
-                                        style={isStep2Ready ? confirmButton : disabledButton}
-                                    >
-                                        {t('Next', { en: 'Next', es: 'Siguiente' })}
-                                    </button>
-                                    <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>
-                                </div>
-                            )}
                         </div>
                     </div>
                 )}
 
                 {/* Panel 3: Summary & Action */}
-                {(!isMobile || step === 3) && (
+                {(true) && (
                     <div style={panelStyle}>
                         <h3 style={panelTitle}><CheckCircle size={18} /> {t('Summary', { en: 'Summary', es: 'Resumen' })}</h3>
                         <div style={panelBody}>
@@ -258,7 +219,6 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                             </div>
 
                             <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row' }}>
-                                {isMobile && <button onClick={handleBack} style={cancelButton}>{t('Back', { en: 'Back', es: 'Atrás' })}</button>}
                                 <button
                                     onClick={handleSubmit}
                                     disabled={!isReady}
