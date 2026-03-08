@@ -749,17 +749,7 @@ const MainPage = () => {
                         </motion.section>
                     ))}
 
-                    {/* Inline Booking Section - Keep as fallback or secondary, but usually handled by Modal now */}
-                    <div id="booking-section">
-                        <AnimatePresence>
-                            {selectedService && (
-                                <InlineBooking
-                                    selectedService={selectedService}
-                                    onCancel={() => setSelectedService(null)}
-                                />
-                            )}
-                        </AnimatePresence>
-                    </div>
+                    {/* Inline Booking Removed: strictly using Modal now */}
 
                     {/* Location Selector Section */}
                     <motion.section

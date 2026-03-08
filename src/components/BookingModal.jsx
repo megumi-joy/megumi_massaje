@@ -141,31 +141,31 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                 >
                     <button onClick={onClose} style={closeButtonStyle}><X size={20} /></button>
 
-                    <h2 style={{ textAlign: 'center', marginBottom: '1rem', color: 'var(--color-accent)', fontSize: '1.25rem' }}>
-                        {t('Book', { en: 'Book', es: 'Reservar', ru: 'Забронировать' })}: <span style={{ color: 'white' }}>{formData.serviceName || t('Session')}</span>
+                    <h2 style={{ textAlign: 'center', marginBottom: '0.75rem', color: 'var(--color-accent)', fontSize: '1.2rem' }}>
+                        {t('Book', { en: 'Book', es: 'Reserva', ru: 'Запись' })}: <span style={{ color: 'white' }}>{formData.serviceName || t('Session')}</span>
                     </h2>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem', flex: 1, overflow: 'hidden' }}>
 
                         {/* 1. CONTACT INFO */}
-                        <div style={sectionWrapper}>
-                            <SectionHeader id={1} title={t('Contact Info')} icon={User} isComplete={isSection1Complete} />
+                        <div style={{ ...sectionWrapper, flex: activeSection === 1 ? 1 : 'unset', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                            <SectionHeader id={1} title={t('Contact Info', { en: 'Contact Info', es: 'Info de contacto', ru: 'Контактная инфо' })} icon={User} isComplete={isSection1Complete} />
                             <AnimatePresence>
                                 {activeSection === 1 && (
-                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={foldContent}>
+                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={{ ...foldContent, flex: 1 }}>
                                         <div style={gridTwoCols}>
                                             <div style={inputGroup}>
-                                                <label style={labelStyle}>{t('Name')}</label>
-                                                <input type="text" style={inputStyle} value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder={t('Enter your name')} />
+                                                <label style={labelStyle}>{t('Name', { en: 'Name', es: 'Nombre', ru: 'Имя' })}</label>
+                                                <input type="text" style={inputStyle} value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="..." />
                                             </div>
                                             <div style={inputGroup}>
-                                                <label style={labelStyle}>{t('Phone')}</label>
+                                                <label style={labelStyle}>{t('Phone', { en: 'Phone', es: 'Teléfono', ru: 'Телефон' })}</label>
                                                 <input type="tel" style={inputStyle} value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="+34 ..." />
                                             </div>
                                         </div>
                                         <div style={gridTwoCols}>
                                             <div style={inputGroup}>
-                                                <label style={labelStyle}>{t('Location')}</label>
+                                                <label style={labelStyle}>{t('Location', { en: 'Location', es: 'Ubicación', ru: 'Локация' })}</label>
                                                 <div style={flexRow}>
                                                     {['Sitges', 'Murcia'].map(loc => (
                                                         <button key={loc} style={formData.location === loc ? activeTabStyle : tabStyle} onClick={() => setFormData({ ...formData, location: loc })}>{loc}</button>
@@ -173,35 +173,35 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                                                 </div>
                                             </div>
                                             <div style={inputGroup}>
-                                                <label style={labelStyle}>{t('Specialist')}</label>
+                                                <label style={labelStyle}>{t('Specialist', { en: 'Specialist', es: 'Especialista', ru: 'Специалист' })}</label>
                                                 <div style={flexRow}>
                                                     {['Any', 'Megumi'].map(spec => (
-                                                        <button key={spec} style={formData.specialist === spec ? activeTabStyle : tabStyle} onClick={() => setFormData({ ...formData, specialist: spec })}>{spec === 'Any' ? t('Any') : spec}</button>
+                                                        <button key={spec} style={formData.specialist === spec ? activeTabStyle : tabStyle} onClick={() => setFormData({ ...formData, specialist: spec })}>{spec === 'Any' ? t('Any', { en: 'Any', es: 'Cualquiera', ru: 'Любой' }) : spec}</button>
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
-                                        <button onClick={() => setActiveSection(2)} disabled={!isSection1Complete} style={nextBtn}>{t('Next')} →</button>
-                                    </motion.div>
-                                )}
-                                {activeSection !== 1 && isSection1Complete && (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={summaryLine}>
-                                        {formData.name} • {formData.phone} • {formData.location}
+                                        <button onClick={() => setActiveSection(2)} disabled={!isSection1Complete} style={nextBtn}>{t('Next', { en: 'Next', es: 'Siguiente', ru: 'Далее' })} →</button>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
+                            {activeSection !== 1 && isSection1Complete && (
+                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={summaryLine}>
+                                    {formData.name} • {formData.phone} • {formData.location}
+                                </motion.div>
+                            )}
                         </div>
 
                         {/* 2. DATE & TIME */}
-                        <div style={sectionWrapper}>
-                            <SectionHeader id={2} title={t('Select Date & Time')} icon={Calendar} isComplete={isSection2Complete} />
+                        <div style={{ ...sectionWrapper, flex: activeSection === 2 ? 1 : 'unset', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                            <SectionHeader id={2} title={t('Date & Time', { en: 'Date & Time', es: 'Fecha y Hora', ru: 'Дату и Время' })} icon={Calendar} isComplete={isSection2Complete} />
                             <AnimatePresence>
                                 {activeSection === 2 && (
-                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={foldContent}>
+                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={{ ...foldContent, flex: 1 }}>
                                         <div style={calendarContainer}>
                                             <div style={calendarHeader}>
                                                 <button onClick={prevWeek} style={navBtn}><ChevronLeft size={16} /></button>
-                                                <span style={{ fontWeight: '600', color: 'white', fontSize: '0.85rem' }}>
+                                                <span style={{ fontWeight: '600', color: 'white', fontSize: '0.8rem' }}>
                                                     {weekDays[0].toLocaleDateString(language, { day: 'numeric', month: 'short' })} - {weekDays[6].toLocaleDateString(language, { day: 'numeric', month: 'short' })}
                                                 </span>
                                                 <button onClick={nextWeek} style={navBtn}><ChevronRight size={16} /></button>
@@ -217,15 +217,15 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                                                             style={{
                                                                 ...dayGridCell,
                                                                 flexDirection: 'column',
-                                                                gap: '2px',
+                                                                gap: '1px',
                                                                 background: isSelected ? 'var(--color-nature-green)' : isToday ? 'rgba(255,215,0,0.1)' : 'rgba(255,255,255,0.03)',
                                                                 opacity: isPast ? 0.2 : 1,
                                                                 borderColor: isSelected ? 'var(--color-nature-green)' : 'rgba(255,255,255,0.05)',
-                                                                height: '55px'
+                                                                height: '52px'
                                                             }}
                                                         >
-                                                            <span style={{ fontSize: '0.6rem', opacity: 0.5 }}>{date.toLocaleDateString(language, { weekday: 'short' })}</span>
-                                                            <span style={{ fontWeight: 'bold' }}>{date.getDate()}</span>
+                                                            <span style={{ fontSize: '0.55rem', opacity: 0.5 }}>{date.toLocaleDateString(language, { weekday: 'short' })}</span>
+                                                            <span style={{ fontWeight: 'bold', fontSize: '0.8rem' }}>{date.getDate()}</span>
                                                         </button>
                                                     );
                                                 })}
@@ -236,35 +236,35 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
                                                 <button key={time} style={formData.time === time ? activeTimeStyle : timeStyle} onClick={() => setFormData({ ...formData, time: time })}>{time}</button>
                                             ))}
                                         </div>
-                                        <button onClick={() => setActiveSection(3)} disabled={!isSection2Complete} style={nextBtn}>{t('Next')} →</button>
-                                    </motion.div>
-                                )}
-                                {activeSection !== 2 && isSection2Complete && (
-                                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={summaryLine}>
-                                        {formData.date} @ {formData.time}
+                                        <button onClick={() => setActiveSection(3)} disabled={!isSection2Complete} style={nextBtn}>{t('Next', { en: 'Next', es: 'Siguiente', ru: 'Далее' })} →</button>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
+                            {activeSection !== 2 && isSection2Complete && (
+                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={summaryLine}>
+                                    {formData.date} @ {formData.time}
+                                </motion.div>
+                            )}
                         </div>
 
                         {/* 3. CONFIRMATION */}
-                        <div style={sectionWrapper}>
-                            <SectionHeader id={3} title={t('Summary & Confirm')} icon={CheckCircle} isComplete={false} />
+                        <div style={{ ...sectionWrapper, borderBottom: 'none', flex: activeSection === 3 ? 1 : 'unset', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                            <SectionHeader id={3} title={t('Final Summary', { en: 'Final Summary', es: 'Resumen final', ru: 'Итого' })} icon={CheckCircle} isComplete={false} />
                             <AnimatePresence>
                                 {activeSection === 3 && (
-                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={foldContent}>
+                                    <motion.div initial={foldInitial} animate={foldAnimate} exit={foldInitial} style={{ ...foldContent, flex: 1 }}>
                                         <div style={summaryBox}>
-                                            <div style={summaryRow}><span>{t('Client')}</span> <strong>{formData.name}</strong></div>
-                                            <div style={summaryRow}><span>{t('When')}</span> <strong>{formData.date} @ {formData.time}</strong></div>
-                                            <div style={summaryRow}><span>{t('Where')}</span> <strong>{formData.location}</strong></div>
+                                            <div style={summaryRow}><span>{t('Client', { en: 'Client', es: 'Cliente', ru: 'Клиент' })}</span> <strong>{formData.name}</strong></div>
+                                            <div style={summaryRow}><span>{t('When', { en: 'When', es: 'Cuándo', ru: 'Когда' })}</span> <strong>{formData.date} @ {formData.time}</strong></div>
+                                            <div style={summaryRow}><span>{t('Where', { en: 'Where', es: 'Dónde', ru: 'Где' })}</span> <strong>{formData.location}</strong></div>
                                         </div>
                                         <div style={inputGroup}>
-                                            <label style={labelStyle}><MessageSquare size={14} /> {t('Notes')}</label>
-                                            <textarea value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })} style={textareaStyle} placeholder={t('Additional notes...')} />
+                                            <label style={labelStyle}><MessageSquare size={14} /> {t('Notes', { en: 'Notes', es: 'Notas', ru: 'Заметки' })}</label>
+                                            <textarea value={formData.notes} onChange={e => setFormData({ ...formData, notes: e.target.value })} style={textareaStyle} placeholder="..." />
                                         </div>
-                                        <div style={hintText}>{t(`Available up to ${BOOKING_LIMIT_MONTHS} mo`)}</div>
+                                        <div style={hintText}>{t(`Available up to ${BOOKING_LIMIT_MONTHS} mo`, { en: `Next ${BOOKING_LIMIT_MONTHS} mo`, es: `Próximos ${BOOKING_LIMIT_MONTHS} meses`, ru: `На ${BOOKING_LIMIT_MONTHS} мес.` })}</div>
                                         <button onClick={handleSubmit} disabled={!isSection1Complete || !isSection2Complete} style={confirmBtn}>
-                                            {t('Confirm Booking')}
+                                            {t('Confirm Booking', { en: 'Confirm Booking', es: 'Confirmar Reserva', ru: 'Забронировать' })}
                                         </button>
                                     </motion.div>
                                 )}
@@ -281,23 +281,23 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
 // Styles
 const overlayStyle = {
     position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-    background: 'rgba(0,0,0,0.95)', display: 'flex', justifyContent: 'center',
-    alignItems: 'center', zIndex: 1000, backdropFilter: 'blur(12px)', padding: '1rem'
+    background: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center',
+    alignItems: 'center', zIndex: 90, padding: '1rem', paddingTop: '4rem'
 };
 
 const modalStyle = {
     background: 'var(--color-bg-secondary)', borderRadius: '24px',
-    width: '440px', height: '600px', padding: '1.25rem',
+    width: '440px', height: '650px', padding: '1rem',
     display: 'flex', flexDirection: 'column', position: 'relative',
     border: '1px solid rgba(255,215,0,0.15)', boxShadow: '0 30px 60px rgba(0,0,0,0.6)',
     overflow: 'hidden'
 };
 
-const sectionWrapper = { borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.1rem' };
-const sectionHeaderStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.6rem 0.8rem', borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s ease' };
+const sectionWrapper = { borderBottom: '1px solid rgba(255,255,255,0.05)' };
+const sectionHeaderStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.8rem', borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s ease', margin: '0.1rem 0' };
 const foldInitial = { height: 0, opacity: 0, overflow: 'hidden' };
-const foldAnimate = { height: 'auto', opacity: 1, marginTop: '0.3rem' };
-const foldContent = { display: 'flex', flexDirection: 'column', gap: '0.6rem', padding: '0 0.4rem 0.6rem' };
+const foldAnimate = { height: 'auto', opacity: 1, marginTop: '0.2rem', display: 'flex', flexDirection: 'column' };
+const foldContent = { display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0 0.4rem 0.6rem' };
 const summaryLine = { padding: '0 0.8rem 0.4rem 2.5rem', fontSize: '0.75rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', opacity: 0.7 };
 const gridTwoCols = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' };
 const inputGroup = { display: 'flex', flexDirection: 'column', gap: '0.15rem' };
@@ -317,8 +317,8 @@ const summaryBox = { background: 'rgba(139, 154, 71, 0.05)', padding: '0.6rem', 
 const summaryRow = { display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' };
 const textareaStyle = { ...inputStyle, height: '40px', resize: 'none' };
 const hintText = { fontSize: '0.65rem', opacity: 0.3, textAlign: 'center' };
-const nextBtn = { padding: '0.4rem 1rem', borderRadius: '40px', background: 'rgba(255,215,0,0.03)', border: '1px solid var(--color-accent)', color: 'var(--color-accent)', cursor: 'pointer', fontWeight: '600', fontSize: '0.8rem', alignSelf: 'flex-end', marginTop: '0.1rem' };
-const confirmBtn = { padding: '0.7rem', borderRadius: '10px', background: 'var(--color-nature-green)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95rem', marginTop: 'auto' };
-const closeButtonStyle = { position: 'absolute', top: '1rem', right: '1rem', color: 'var(--color-text-secondary)', cursor: 'pointer', background: 'none', border: 'none' };
+const nextBtn = { padding: '0.4rem 1rem', borderRadius: '40px', background: 'rgba(255,215,0,0.03)', border: '1px solid var(--color-accent)', color: 'var(--color-accent)', cursor: 'pointer', fontWeight: '600', fontSize: '0.8rem', alignSelf: 'flex-end', marginTop: '0.4rem' };
+const confirmBtn = { padding: '0.7rem', borderRadius: '10px', background: 'var(--color-nature-green)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95rem', marginTop: '0.4rem' };
+const closeButtonStyle = { position: 'absolute', top: '0.75rem', right: '0.75rem', color: 'var(--color-text-secondary)', cursor: 'pointer', background: 'none', border: 'none' };
 
 export default BookingModal;
