@@ -84,3 +84,13 @@ Here are some ideas to further enhance the platform:
 -   [ ] **Gift Cards**: Ability to purchase and redeem digital gift cards.
 -   [ ] **Loyalty Program**: Digital punch card (e.g., "Buy 10 massages, get 1 free").
 
+
+## Customizing Booking Limit
+
+You can adjust how far in the future clients can book appointments by modifying the following constant:
+
+- **File**: `src/components/BookingModal.jsx`
+- **Constant**: `BOOKING_LIMIT_MONTHS`
+- **Default**: `3` (Allows booking up to 3 months from the current date)
+
+Simply change the numerical value (e.g., to `6` for half a year) and save the file. The calendar will automatically update its navigation limits and display a hint to the user.

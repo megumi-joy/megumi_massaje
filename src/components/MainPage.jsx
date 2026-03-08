@@ -6,15 +6,49 @@ import { SERVICES } from '../data/services';
 import { supabase } from '../utils/supabaseClient';
 import ServiceSlider from './ServiceSlider';
 import InlineBooking from './InlineBooking';
+import BookingModal from './BookingModal';
 import AuthModal from './AuthModal';
 import UserDashboard from './UserDashboard';
-import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone, User } from 'lucide-react';
+import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone, User, X } from 'lucide-react';
 
 // Lazy load heavy components
 const FohowPage = lazy(() => import('./FohowPage'));
 // Note: We need to handle how FohowPage is routed in App.jsx, but here we can optimize internal modals if any.
 // Actually, EventModal isn't imported here yet, it's inline or missing. 
 // Let's assume UserDashboard might be heavy.
+
+const LanguageSelector = () => {
+    const { language, setLanguage } = useLanguage();
+    const langs = [
+        { code: 'en', label: 'EN' },
+        { code: 'es', label: 'ES' },
+        { code: 'ru', label: 'RU' }
+    ];
+
+    return (
+        <div style={{ display: 'flex', gap: '0.5rem', marginRight: '1rem' }}>
+            {langs.map(lang => (
+                <button
+                    key={lang.code}
+                    onClick={() => setLanguage(lang.code)}
+                    style={{
+                        background: 'transparent',
+                        border: language === lang.code ? '1px solid var(--color-accent)' : '1px solid rgba(255,255,255,0.1)',
+                        color: language === lang.code ? 'var(--color-accent)' : 'rgba(255,255,255,0.5)',
+                        padding: '0.3rem 0.6rem',
+                        borderRadius: '4px',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                        fontWeight: language === lang.code ? 'bold' : 'normal',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    {lang.label}
+                </button>
+            ))}
+        </div>
+    );
+};
 
 const AnimatedText = ({ text, className, style, delay = 0 }) => {
     const words = text.split(' ');
@@ -83,6 +117,7 @@ const MainPage = () => {
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [user, setUser] = useState(null);
     const [showDashboard, setShowDashboard] = useState(false);
+    const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
     useEffect(() => {
         if (supabase) {
@@ -198,10 +233,7 @@ const MainPage = () => {
 
     const handleBook = (service) => {
         setSelectedService(service);
-        // We will scroll to the booking section automatically
-        setTimeout(() => {
-            document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        setIsBookingModalOpen(true);
     };
 
     const scrollToSection = (key) => {
@@ -240,6 +272,7 @@ const MainPage = () => {
                     Megumi Massaje
                 </h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
+                    <LanguageSelector />
                     {user ? (
                         <button
                             onClick={() => setShowDashboard(!showDashboard)}
@@ -274,7 +307,7 @@ const MainPage = () => {
                         </button>
                     )}
                     <button
-                        onClick={() => treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                        onClick={() => setIsBookingModalOpen(true)}
                         style={{
                             background: 'var(--color-accent)',
                             color: 'var(--color-bg-primary)',
@@ -328,15 +361,18 @@ const MainPage = () => {
                                 {
                                     title: { en: 'Fohow Bioenergy', es: 'Bioenergía Fohow', ru: 'Fohow Биоэнергия', ua: 'Fohow Біоенергія', ca: 'Bioenergia Fohow' },
                                     image: '/fohow_service_preview_1771615222147.png',
-                                    action: () => navigate('/fohow'),
-                                    btnText: { en: 'Learn More', es: 'Saber Más', ru: 'Подробнее', ua: 'Детальніше', ca: 'Saber Més' }
+                                    action: () => {
+                                        const fohowService = servicesData.fohow?.items?.[0] || { id: 'fohow-bioenergy', name: { en: 'Bioenergy Massage' } };
+                                        handleBook(fohowService);
+                                    },
+                                    btnText: { en: 'Book Fohow', es: 'Reservar Fohow', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar Fohow' }
                                 },
                                 {
                                     title: { en: 'Manicure', es: 'Manicura', ru: 'Маникюр', ua: 'Манікюр', ca: 'Manicura' },
                                     image: '/manicure_service_preview_1771615233921.png',
                                     action: () => {
-                                        // Scroll to manicure specifically if possible, or just treatments
-                                        treatmentsRef.current?.scrollIntoView({ behavior: 'smooth' });
+                                        const manicureService = servicesData.manicure?.items?.[0] || { id: 'manicure-classic', name: { en: 'Classic Manicure' } };
+                                        handleBook(manicureService);
                                     },
                                     btnText: { en: 'Book Manicure', es: 'Reservar Manicura', ru: 'Записаться', ua: 'Записатися', ca: 'Reservar Manicura' }
                                 }
@@ -713,7 +749,7 @@ const MainPage = () => {
                         </motion.section>
                     ))}
 
-                    {/* Inline Booking Section */}
+                    {/* Inline Booking Section - Keep as fallback or secondary, but usually handled by Modal now */}
                     <div id="booking-section">
                         <AnimatePresence>
                             {selectedService && (
@@ -724,6 +760,7 @@ const MainPage = () => {
                             )}
                         </AnimatePresence>
                     </div>
+
                     {/* Location Selector Section */}
                     <motion.section
                         ref={locationRef}
@@ -922,6 +959,11 @@ const MainPage = () => {
                     </motion.button>
                 )}
             </AnimatePresence>
+            <BookingModal
+                isOpen={isBookingModalOpen}
+                onClose={() => setIsBookingModalOpen(false)}
+                preSelectedService={selectedService}
+            />
         </div>
     );
 };

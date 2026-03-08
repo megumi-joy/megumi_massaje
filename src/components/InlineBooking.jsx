@@ -268,10 +268,11 @@ const cancelButton = {
 };
 
 const threePanelLayout = {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1.5fr 1fr',
-    gap: '1.5rem',
-    alignItems: 'start'
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2.5rem',
+    maxWidth: '800px',
+    margin: '0 auto'
 };
 
 const panelStyle = {
