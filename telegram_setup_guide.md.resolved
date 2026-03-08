@@ -1,0 +1,71 @@
+# Telegram Notification Setup Guide for Supabase
+
+This guide walks you through setting up a Supabase Edge Function to send a Telegram message instantly whenever a new booking is made on your GitHub Pages site.
+
+## Step 1: Create a Telegram Bot
+
+We need to create a bot that will send the messages to you.
+
+1. Open Telegram and search for the contact **@BotFather**.
+2. Start a chat with BotFather and send the message `/newbot`.
+3. Follow the instructions to give your bot a name and a username (the username must end in "bot", e.g., `megumimassajebot`).
+4. BotFather will reply with a message containing your **HTTP API Token** (it looks like a long string of letters and numbers: `123456789:ABCdefGHIjkl...`).
+5. **Copy this token** and keep it secret.
+
+## Step 2: Get Your Chat ID
+
+Now we need to tell the bot *where* to send the messages. We need your personal Telegram Chat ID.
+
+1. Search for **@userinfobot** or **@RawDataBot** on Telegram.
+2. Start a chat with it.
+3. It will reply with some JSON data. Look for `"id":` under the `"chat":` or `"from":` section. It will be a string of numbers (e.g., `987654321` or `-100123456789`).
+4. **Copy this Chat ID**.
+
+## Step 3: Configure Supabase Secrets
+
+We have to securely store these two pieces of information in your Supabase project so the Edge Function can read them.
+
+1.  Open your command line/terminal in this project's folder (`c:\Users\user\Documents\GitHub\megumi_massaje`).
+2.  Run the following two commands, replacing the placeholders with your actual token and chat ID:
+
+```bash
+supabase secrets set TELEGRAM_BOT_TOKEN="your_long_token_from_botfather"
+supabase secrets set TELEGRAM_CHAT_ID="your_chat_id_number"
+```
+*(Alternatively, you can add these secrets via the Supabase Dashboard: Go to **Settings > Edge Functions** and add the new secrets there).*
+
+## Step 4: Deploy the Edge Function
+
+Now we deploy the code we just wrote.
+
+1. Open your command line/terminal in this project's folder.
+2. Run the deployment command:
+
+```bash
+supabase functions deploy telegram-notification --no-verify-jwt
+```
+*(We use `--no-verify-jwt` because Webhooks from Supabase don't pass user authentication tokens; they come over a secure direct connection).*
+
+## Step 5: Setup the Database Webhook
+
+Finally, tell Supabase to run this function perfectly every time a booking is created.
+
+1. Log in to your [Supabase Dashboard](https://app.supabase.com/).
+2. Select your project.
+3. On the left sidebar, click **Database** (the table icon).
+4. Click on **Webhooks** in the menu under Database.
+5. Click the **Create Webhook** button.
+6. Fill out the form:
+   - **Name:** Telegram Notification
+   - **Table:** `bookings` (or whatever your bookings table is named)
+   - **Events:** Select **Insert** (only trigger on new bookings)
+   - **Type:** **HTTP Request**
+7. For the **HTTP Request** details:
+   - **Method:** `POST`
+   - **URL:** Enter the URL for your edge function. You can find this in the Supabase Dashboard under **Edge Functions**. It will look something like: `https://<YOUR_PROJECT_ID>.supabase.co/functions/v1/telegram-notification`
+   - **HTTP Headers:** Add a header:
+     - Header Name: `Content-Type`
+     - Value: `application/json`
+8. Click **Confirm**.
+
+**You are done!** Make a test booking on your website, and you should receive a Telegram message instantly.
