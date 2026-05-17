@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { COURSES } from '../data/courses';
 import LessonViewer from './LessonViewer';
-import { BookOpen, Award, Terminal } from 'lucide-react';
+import { BookOpen, Play } from 'lucide-react';
 
 const TeachingPlatform = () => {
     const { t, language } = useLanguage();

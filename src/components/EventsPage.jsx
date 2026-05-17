@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { supabase } from '../utils/supabaseClient';
-import { MapPin, User, ArrowLeft } from 'lucide-react';
+import { MapPin, ArrowLeft } from 'lucide-react';
 
 const EventsPage = () => {
     const { t } = useLanguage();
@@ -14,45 +13,13 @@ const EventsPage = () => {
     const [registerForm, setRegisterForm] = useState({ name: '', email: '' });
 
     useEffect(() => {
-        if (supabase) {
-            fetchEvents();
-        } else {
-            // Mock events for demo
-            setEvents([
-                { id: 1, title: 'Mafia Game Night', date: '2023-11-15T19:00:00', location: 'Sitges', type: 'game', description: 'Classic Mafia game. Meet new people!', price: 10 },
-                { id: 2, title: 'Spanish Workshop', date: '2023-11-18T10:00:00', location: 'Online', type: 'class', description: 'Learn basic Spanish phrases for massage.', price: 15 },
-                { id: 3, title: 'English Workshop', date: '2023-11-20T10:00:00', location: 'Sitges', type: 'class', description: 'Improve your English skills.', price: 12 },
-            ]);
-        }
+        // Mock events for demo
+        setEvents([
+            { id: 1, title: 'Mafia Game Night', date: '2026-11-15T19:00:00', location: 'Sitges', type: 'game', description: 'Classic Mafia game. Meet new people!', price: 10 },
+            { id: 2, title: 'Spanish Workshop', date: '2026-11-18T10:00:00', location: 'Online', type: 'class', description: 'Learn basic Spanish phrases for massage.', price: 15 },
+            { id: 3, title: 'English Workshop', date: '2026-11-20T10:00:00', location: 'Sitges', type: 'class', description: 'Improve your English skills.', price: 12 },
+        ]);
     }, []);
-
-    const fetchEvents = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('events')
-                .select('*')
-                .gte('date', new Date().toISOString())
-                .order('date', { ascending: true });
-
-            if (error) throw error;
-            if (data && data.length > 0) {
-                setEvents(data);
-            } else {
-                // Fallback mock if DB is empty
-                setEvents([
-                    { id: 1, title: 'Mafia Game Night', date: '2023-11-15T19:00:00', location: 'Sitges', type: 'game', description: 'Classic Mafia game. Meet new people!', price: 10 },
-                    { id: 2, title: 'Spanish Workshop', date: '2023-11-18T10:00:00', location: 'Online', type: 'class', description: 'Learn basic Spanish phrases for massage.', price: 15 },
-                ]);
-            }
-        } catch (err) {
-            console.warn('Real-time events not available.', err);
-            // Fallback mock
-            setEvents([
-                { id: 1, title: 'Mafia Game Night', date: '2023-11-15T19:00:00', location: 'Sitges', type: 'game', description: 'Classic Mafia game. Meet new people!', price: 10 },
-                { id: 2, title: 'Spanish Workshop', date: '2023-11-18T10:00:00', location: 'Online', type: 'class', description: 'Learn basic Spanish phrases for massage.', price: 15 },
-            ]);
-        }
-    };
 
     const handleJoinEvent = (event) => {
         setSelectedEvent(event);
@@ -64,16 +31,16 @@ const EventsPage = () => {
         if (!registerForm.name || !registerForm.email) return;
 
         try {
-            if (supabase) {
-                const { error } = await supabase
-                    .from('event_registrations')
-                    .insert([{
-                        event_id: selectedEvent.id,
-                        user_name: registerForm.name,
-                        user_email: registerForm.email
-                    }]);
-                if (error) throw error;
-            }
+            const payload = {
+                name: registerForm.name,
+                email: registerForm.email,
+                message: `EVENT REGISTRATION\nEvent: ${selectedEvent.title}\nDate: ${new Date(selectedEvent.date).toLocaleDateString()}`
+            };
+            await fetch('https://api.voicydroid.com/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
             alert(`You have registered for ${selectedEvent.title}!`);
             setShowEventModal(false);
             setRegisterForm({ name: '', email: '' });

@@ -1,3 +1,4 @@
+/* global process */
 import { createClient } from '@supabase/supabase-js';
 
 // Replace with your actual Supabase URL and Anon Key

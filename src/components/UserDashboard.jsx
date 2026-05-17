@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useLanguage } from '../context/LanguageContext';
-import { LogOut, Calendar, User, Settings } from 'lucide-react';
+import { LogOut, Calendar, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const UserDashboard = () => {
@@ -27,7 +27,7 @@ const UserDashboard = () => {
                 .order('date', { ascending: false });
 
             // Also fetch event registrations
-            const { data: events } = await supabase
+            await supabase
                 .from('event_registrations')
                 .select('*, events(*)')
                 .eq('user_email', user.email);

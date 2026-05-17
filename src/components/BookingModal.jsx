@@ -2,8 +2,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, User, CheckCircle, MessageSquare, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { supabase } from '../utils/supabaseClient';
-
 // CONFIGURABLE BOOKING LIMIT (Months)
 const BOOKING_LIMIT_MONTHS = 3;
 
@@ -57,30 +55,22 @@ const BookingModal = ({ isOpen, onClose, preSelectedService }) => {
     const isSection2Complete = formData.date && formData.time;
 
     const handleSubmit = async () => {
-        if (supabase) {
-            try {
-                const { error } = await supabase
-                    .from('appointments')
-                    .insert([{
-                        name: formData.name,
-                        phone: formData.phone,
-                        date: formData.date,
-                        time: formData.time,
-                        location: formData.location.toLowerCase(),
-                        notes: `[Specialist: ${formData.specialist}] ${formData.notes}`,
-                        service_id: formData.serviceId,
-                        service_name: formData.serviceName
-                    }]);
-                if (error) throw error;
-                alert(t('Booking successful! We will contact you soon.'));
-                onClose();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-            }
-        } else {
-            alert(t('Thank you! (Demo Mode) We will contact you soon.'));
+        try {
+            const payload = {
+                name: formData.name,
+                email: formData.phone || "No phone",
+                message: `NEW BOOKING\nService: ${formData.serviceName || "Any"}\nDate: ${formData.date} @ ${formData.time}\nLocation: ${formData.location}\nSpecialist: ${formData.specialist}\nNotes: ${formData.notes}`
+            };
+            await fetch('https://api.voicydroid.com/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            alert(t('Booking successful! We will contact you soon.', { en: 'Booking successful! We will contact you soon.', es: '¡Reserva exitosa! Te contactaremos pronto.', ru: 'Бронь успешна! Мы скоро свяжемся.' }));
             onClose();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error: ' + error.message);
         }
     };
 

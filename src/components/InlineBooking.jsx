@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Calendar, CheckCircle, Info } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { supabase } from '../utils/supabaseClient';
 
 const InlineBooking = ({ selectedService, onCancel }) => {
     const { t, language } = useLanguage();
@@ -47,32 +46,22 @@ const InlineBooking = ({ selectedService, onCancel }) => {
     const handleSubmit = async () => {
         if (!isReady) return;
 
-        if (supabase) {
-            try {
-                const { error } = await supabase
-                    .from('appointments')
-                    .insert([{
-                        name: formData.name,
-                        phone: formData.phone,
-                        date: formData.date,
-                        time: formData.time,
-                        location: formData.location.toLowerCase(),
-                        notes: `[Specialist: ${formData.specialist}] ${formData.notes}`,
-                        service_id: selectedService?.id,
-                        service_name: selectedService?.name?.en
-                    }]);
-
-                if (error) throw error;
-                alert(t('Booking successful! We will contact you soon.', { en: 'Booking successful! We will contact you soon.', es: '¡Reserva exitosa! Te contactaremos pronto.', ru: 'Бронирование успешно! Мы свяжемся с вами скоро.', ua: "Бронювання успішне! Ми зв'яжемося з вами скоро.", ca: 'Reserva exitosa! Et contactarem aviat.' }));
-                onCancel();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error: ' + error.message);
-            }
-        } else {
-            console.log('Mock Booking:', formData);
-            alert(t('Thank you! (Demo Mode) We will contact you soon.', { en: 'Thank you! (Demo Mode) We will contact you soon.', es: '¡Gracias! (Modo Demo) Te contactaremos pronto.', ru: 'Спасибо! (Демо режим) Мы свяжемся с вами скоро.', ua: "Дякуємо! (Демо режим) Ми зв'яжемося з вами скоро.", ca: 'Gràcies! (Mode Demo) Et contactarem aviat.' }));
+        try {
+            const payload = {
+                name: formData.name,
+                email: formData.phone || "No phone",
+                message: `NEW BOOKING\nService: ${selectedService?.name?.en || "Any"}\nDate: ${formData.date} @ ${formData.time}\nLocation: ${formData.location}\nSpecialist: ${formData.specialist}\nNotes: ${formData.notes}`
+            };
+            await fetch('https://api.voicydroid.com/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            alert(t('Booking successful! We will contact you soon.', { en: 'Booking successful! We will contact you soon.', es: '¡Reserva exitosa! Te contactaremos pronto.', ru: 'Бронь успешна! Мы скоро свяжемся.' }));
             onCancel();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error: ' + error.message);
         }
     };
 
@@ -228,11 +217,6 @@ const InlineBooking = ({ selectedService, onCancel }) => {
                                 </button>
                             </div>
 
-                            {!supabase && (
-                                <div style={offlineNotice}>
-                                    <Info size={14} /> {t('Offline fallback active')}
-                                </div>
-                            )}
                         </div>
                     </div>
                 )}
@@ -428,28 +412,7 @@ const disabledButton = {
     cursor: 'not-allowed'
 };
 
-const offlineNotice = {
-    fontSize: '0.8rem',
-    color: 'var(--color-accent)',
-    opacity: 0.7,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.3rem',
-    justifyContent: 'center'
-};
 
-const stepIndicator = {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '0.5rem',
-    marginBottom: '1.5rem'
-};
 
-const stepDot = {
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    transition: 'background 0.3s ease'
-};
 
 export default InlineBooking;

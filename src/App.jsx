@@ -10,7 +10,7 @@ import TeachingPlatform from './components/TeachingPlatform';
 const FohowPage = lazy(() => import('./components/FohowPage'));
 const EventsPage = lazy(() => import('./components/EventsPage'));
 const PartnersPage = lazy(() => import('./components/PartnersPage'));
-import AuthModal from './components/AuthModal'; // Import if needed globally, though it's in MainPage now
+
 import './styles/index.css';
 
 function App() {

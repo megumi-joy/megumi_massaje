@@ -1,3 +1,4 @@
+/* global process */
 import { test, expect } from '@playwright/test';
 
 test('deployment verification', async ({ page }) => {

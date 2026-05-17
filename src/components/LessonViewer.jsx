@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { Play, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
-import ReactMarkdown from 'react-markdown'; // We might need to install this, or use simple rendering for MVP
+import { CheckCircle, ArrowLeft } from 'lucide-react';
+ // We might need to install this, or use simple rendering for MVP
 
 // Simple markdown renderer fallback if library not present
 const MarkdownRenderer = ({ content }) => {
@@ -19,12 +19,12 @@ const MarkdownRenderer = ({ content }) => {
 
 const LessonViewer = ({ lesson, onBack }) => {
     const { t, language } = useLanguage();
-    const [activeQuiz, setActiveQuiz] = useState(null);
+    
     const [quizResult, setQuizResult] = useState(null);
 
     const handleQuizAnswer = (qIndex, optionIndex) => {
         const isCorrect = lesson.quiz[qIndex].correct === optionIndex;
-        setQuizResult({ qIndex, isCorrect });
+        setQuizResult({ qIndex, isCorrect, optIdx: optionIndex });
     };
 
     return (
@@ -84,7 +84,7 @@ const LessonViewer = ({ lesson, onBack }) => {
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             background: quizResult?.qIndex === idx && quizResult?.isCorrect && lesson.quiz[idx].correct === optIdx
                                                 ? 'rgba(0, 255, 0, 0.2)'
-                                                : quizResult?.qIndex === idx && !quizResult?.isCorrect && optIdx === activeQuiz
+                                                : quizResult?.qIndex === idx && !quizResult?.isCorrect && optIdx === quizResult?.optIdx
                                                     ? 'rgba(255, 0, 0, 0.2)'
                                                     : 'transparent',
                                             color: 'white',

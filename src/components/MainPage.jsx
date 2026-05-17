@@ -1,18 +1,13 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { SERVICES } from '../data/services';
-import { supabase } from '../utils/supabaseClient';
 import ServiceSlider from './ServiceSlider';
-import InlineBooking from './InlineBooking';
 import BookingModal from './BookingModal';
-import AuthModal from './AuthModal';
-import UserDashboard from './UserDashboard';
-import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone, User, X } from 'lucide-react';
+import { Calendar, Phone, MapPin, Info, CheckCircle, Smartphone } from 'lucide-react';
 
 // Lazy load heavy components
-const FohowPage = lazy(() => import('./FohowPage'));
 // Note: We need to handle how FohowPage is routed in App.jsx, but here we can optimize internal modals if any.
 // Actually, EventModal isn't imported here yet, it's inline or missing. 
 // Let's assume UserDashboard might be heavy.
@@ -109,104 +104,17 @@ const MainPage = () => {
     const navigate = useNavigate();
     const [selectedService, setSelectedService] = useState(null);
     const [activeLocation, setActiveLocation] = useState('Sitges');
-    const [servicesData, setServicesData] = useState(SERVICES);
-    const [events, setEvents] = useState([]);
-    const [showEventModal, setShowEventModal] = useState(false);
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const [registerForm, setRegisterForm] = useState({ name: '', email: '' });
-    const [showAuthModal, setShowAuthModal] = useState(false);
-    const [user, setUser] = useState(null);
-    const [showDashboard, setShowDashboard] = useState(false);
+    const servicesData = SERVICES;
+    
+    
+    
+    
     const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+    
 
-    useEffect(() => {
-        if (supabase) {
-            fetchServices();
-            fetchEvents();
 
-            // Check auth status
-            supabase.auth.getUser().then(({ data: { user } }) => {
-                setUser(user);
-            });
 
-            const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-                setUser(session?.user ?? null);
-            });
 
-            return () => subscription.unsubscribe();
-        }
-    }, []);
-
-    const fetchServices = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('services')
-                .select('*');
-
-            if (error) throw error;
-            if (data && data.length > 0) {
-                // Group by category to match the UI structure
-                const grouped = data.reduce((acc, service) => {
-                    const cat = service.category || 'massage';
-                    if (!acc[cat]) acc[cat] = { title: service.category_title || { en: cat }, items: [] };
-                    acc[cat].items.push(service);
-                    return acc;
-                }, {});
-                setServicesData(grouped);
-            }
-        } catch (err) {
-            console.warn('Real-time services not available, using local data.', err);
-        }
-    };
-
-    const fetchEvents = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('events')
-                .select('*')
-                .gte('date', new Date().toISOString())
-                .order('date', { ascending: true });
-
-            if (error) throw error;
-            setEvents(data || []);
-        } catch (err) {
-            console.warn('Real-time events not available.', err);
-            // Mock events for demo
-            setEvents([
-                { id: 1, title: 'Mafia Game Night', date: '2023-11-15T19:00:00', location: 'Sitges', type: 'game', description: 'Classic Mafia game. Meet new people!', price: 10 },
-                { id: 2, title: 'Spanish Workshop', date: '2023-11-18T10:00:00', location: 'Online', type: 'class', description: 'Learn basic Spanish phrases for massage.', price: 15 },
-            ]);
-        }
-    };
-
-    const handleJoinEvent = (event) => {
-        setSelectedEvent(event);
-        setShowEventModal(true);
-    };
-
-    const submitRegistration = async (e) => {
-        e.preventDefault();
-        if (!registerForm.name || !registerForm.email) return;
-
-        try {
-            if (supabase) {
-                const { error } = await supabase
-                    .from('event_registrations')
-                    .insert([{
-                        event_id: selectedEvent.id,
-                        user_name: registerForm.name,
-                        user_email: registerForm.email
-                    }]);
-                if (error) throw error;
-            }
-            alert(`You have registered for ${selectedEvent.title}!`);
-            setShowEventModal(false);
-            setRegisterForm({ name: '', email: '' });
-        } catch (err) {
-            console.error('Registration failed:', err);
-            alert('Registration failed. Please try again or contact us.');
-        }
-    };
     const whoWeAreRef = useRef(null);
     const treatmentsRef = useRef(null);
     const benefitsRef = useRef(null);
@@ -273,39 +181,7 @@ const MainPage = () => {
                 </h2>
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <LanguageSelector />
-                    {user ? (
-                        <button
-                            onClick={() => setShowDashboard(!showDashboard)}
-                            style={{
-                                background: 'rgba(255,255,255,0.1)',
-                                color: 'var(--color-text-primary)',
-                                padding: '0.8rem',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '1px solid var(--color-accent)',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            <User size={18} />
-                        </button>
-                    ) : (
-                        <button
-                            onClick={() => setShowAuthModal(true)}
-                            style={{
-                                background: 'transparent',
-                                color: 'var(--color-text-primary)',
-                                padding: '0.8rem 1.5rem',
-                                borderRadius: '50px',
-                                fontWeight: 'bold',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            {t('Login', { en: 'Login', es: 'Entrar' })}
-                        </button>
-                    )}
+
                     <button
                         onClick={() => setIsBookingModalOpen(true)}
                         style={{
@@ -333,10 +209,7 @@ const MainPage = () => {
                 </div>
             </header>
 
-            {showDashboard ? (
-                <UserDashboard />
-            ) : (
-                <main className="container" style={{ paddingBottom: '4rem' }}>
+            <main className="container" style={{ paddingBottom: '4rem' }}>
 
                     {/* Core Services Section */}
                     <motion.section
@@ -647,81 +520,7 @@ const MainPage = () => {
 
 
 
-                    {/* Event Registration Modal */}
-                    <AnimatePresence>
-                        {showEventModal && selectedEvent && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                style={{
-                                    position: 'fixed',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    background: 'rgba(0,0,0,0.8)',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    zIndex: 1000
-                                }}
-                                onClick={() => setShowEventModal(false)}
-                            >
-                                <motion.div
-                                    initial={{ scale: 0.9 }}
-                                    animate={{ scale: 1 }}
-                                    exit={{ scale: 0.9 }}
-                                    style={{
-                                        background: 'var(--color-bg-primary)',
-                                        padding: '2rem',
-                                        borderRadius: '16px',
-                                        width: '90%',
-                                        maxWidth: '400px',
-                                        border: '1px solid var(--color-accent)'
-                                    }}
-                                    onClick={e => e.stopPropagation()}
-                                >
-                                    <h3 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>{t('Join', { en: 'Join', es: 'Unirse a', ru: 'Присоединиться к', ua: 'Приєднатися до', ca: 'Unir-se a' })} {selectedEvent.title}</h3>
-                                    <form onSubmit={submitRegistration} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                        <input
-                                            type="text"
-                                            placeholder={t('Your Name', { en: 'Your Name', es: 'Tu Nombre', ru: 'Ваше Имя', ua: "Ваше Ім'я", ca: 'El teu Nom' })}
-                                            required
-                                            value={registerForm.name}
-                                            onChange={e => setRegisterForm({ ...registerForm, name: e.target.value })}
-                                            style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-text-secondary)', background: 'transparent', color: 'white' }}
-                                        />
-                                        <input
-                                            type="email"
-                                            placeholder={t('Your Email', { en: 'Your Email', es: 'Tu Email', ru: 'Ваш Email', ua: 'Ваш Email', ca: 'El teu Email' })}
-                                            required
-                                            value={registerForm.email}
-                                            onChange={e => setRegisterForm({ ...registerForm, email: e.target.value })}
-                                            style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--color-text-secondary)', background: 'transparent', color: 'white' }}
-                                        />
-                                        <div style={{ fontSize: '0.9rem', opacity: 0.8, textAlign: 'center' }}>
-                                            {t('We will contact you with details.', { en: 'We will contact you with details.', es: 'Te contactaremos con los detalles.', ru: 'Мы свяжемся с вами с деталями.', ua: "Ми зв'яжемося з вами з деталями.", ca: 'Et contactarem amb els detalls.' })}
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            style={{
-                                                padding: '1rem',
-                                                background: 'var(--color-accent)',
-                                                color: 'var(--color-bg-primary)',
-                                                borderRadius: '8px',
-                                                fontWeight: 'bold',
-                                                border: 'none',
-                                                cursor: 'pointer'
-                                            }}
-                                        >
-                                            {t('Confirm Registration', { en: 'Confirm Registration', es: 'Confirmar Registro', ru: 'Подтвердить Регистрацию', ua: 'Підтвердити Реєстрацію', ca: 'Confirmar Registre' })}
-                                        </button>
-                                    </form>
-                                </motion.div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    
 
                     {/* Services Sections - Now as Sliders */}
                     {Object.entries(servicesData).map(([key, category], index) => (
@@ -884,8 +683,6 @@ const MainPage = () => {
                     </div>
 
                 </main>
-            )}
-
             {/* Footer */}
             <footer ref={contactRef} style={{
                 background: 'var(--color-bg-secondary)',
@@ -908,16 +705,6 @@ const MainPage = () => {
                 </div>
                 <p style={{ marginTop: '2rem', opacity: 0.6 }}>&copy; {new Date().getFullYear()} Megumi Massaje. All rights reserved.</p>
             </footer>
-
-            <AuthModal
-                isOpen={showAuthModal}
-                onClose={() => setShowAuthModal(false)}
-                onSuccess={() => {
-                    setShowAuthModal(false);
-                    // Optionally show dashboard or success toast
-                }}
-            />
-
             {/* Back to Top Button */}
             <AnimatePresence>
                 {!selectedService && (
